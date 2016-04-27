@@ -9,10 +9,9 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 }
 
 exports.getStats = function (req, res) {
-
-
-    var compFirst = localStorage.getItem('company1');
-    var compSecond = localStorage.getItem('company2');
+    
+    var compFirst = localStorage.getItem('compFirst');
+    var compSecond = localStorage.getItem('compSecond');
     var getStats = "select * from mytable1 where Company_Name='" + compFirst + "' OR Company_Name='" + compSecond + "'";
     var polarity = [];
     tweetStats.getTweets(compFirst, compSecond, function (err, result, twits) {
@@ -24,6 +23,7 @@ exports.getStats = function (req, res) {
         polarity = result;
         var tweets = twits;
         console.log("hello pol..." + polarity);
+        console.log("hello pol..." + twits);
 
         mysql.fetchData(getStats, function (err, rows) {
             if (rows.length < 6) {

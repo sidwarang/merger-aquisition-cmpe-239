@@ -4,9 +4,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routesBase = require('./routes/index');
+//var routesBase = require('./routes/index');
 var analysis = require('./routes/analysis');
 var stockAnalysis = require('./routes/stockAnalysis');
+if (typeof localStorage === "undefined" || localStorage === null) {
+    var LocalStorage = require('node-localstorage').LocalStorage;
+    localStorage = new LocalStorage('./scratch');
+}
 var app = express();
 
 // view engine setup
@@ -21,9 +25,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
-app.use('/', routesBase);
+app.get('/', function (req, res) {
+    localStorage.clear();
+    localStorage.setItem('set', 0);
+    res.render('index');
+});
 
 app.post('/getStats', analysis.getStats);
+
+app.get('/getStats', analysis.getStats);
 
 app.get('/index', function (req, res) {
     res.render('stats');
