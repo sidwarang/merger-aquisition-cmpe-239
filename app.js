@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 //var routesBase = require('./routes/index');
 var analysis = require('./routes/analysis');
 var stockAnalysis = require('./routes/stockAnalysis');
+var tweetAnalysis = require('./routes/tweetAnalysis');
 if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');
@@ -45,9 +46,7 @@ app.get('/strategy', function (req, res) {
     res.render('strategy');
 });
 
-app.get('/sentiment', function (req, res) {
-    res.render('sentiment');
-});
+app.get('/sentiment', tweetAnalysis.getStats);
 
 app.get('/company1', function (req, res) {
     res.render('company1');

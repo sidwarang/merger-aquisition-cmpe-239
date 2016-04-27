@@ -23,7 +23,6 @@ exports.getStats = function (req, res) {
         polarity = result;
         var tweets = twits;
         console.log("hello pol..." + polarity);
-        console.log("hello pol..." + twits);
 
         mysql.fetchData(getStats, function (err, rows) {
             if (rows.length < 6) {
