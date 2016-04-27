@@ -86,11 +86,6 @@ exports.getStats = function (req, res) {
                         operating_MarginRatio1.push((comp1[i].EBITDA / comp1[i].total_revenue));
                         operating_MarginRatio2.push((comp2[i].EBITDA / comp2[i].total_revenue));
 
-                        console.log("value Total_Current_Assets 1.." + comp1[i].Total_Current_Assets);
-                        console.log("value Total_Current_Assets 2.." + comp2[i].Total_Current_Assets);
-                        console.log("Company 1: " + JSON.stringify(comp1));
-                        console.log("Company 2: " + JSON.stringify(comp1))
-
                         if (EV1[i] > 2 * EV2[i]) {
                             counter = counter + 1;
                             console.log("in EV.." + counter);
@@ -159,6 +154,7 @@ exports.getStats = function (req, res) {
                     localStorage.setItem('polarity', polarity);
                     localStorage.setItem('tweets', tweets);
                     localStorage.setItem('set', 1);
+                    console.log(comp1[0]);
                     res.render('stats', {
                         data: rows,
                         comp1: comp1,

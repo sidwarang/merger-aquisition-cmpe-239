@@ -164,90 +164,66 @@
 
             var chart1 = new Highcharts.Chart({
                 chart: {
-                    renderTo: 'container1',
-                    backgroundColor: '#EDEEFA',
-                    type: 'column'
+                    type: 'column',
+                    renderTo: 'container1'
                 },
                 title: {
-                    text: 'Stock Symbol: <%= comp1[0].Company_Name.toString().toUpperCase() %>'
+                    text: 'Stacked data for the two companies'
                 },
-                /*  subtitle: {
-                 text: 'Source: WorldClimate.com'
-                 }, */
-
                 xAxis: {
-                    categories: [
-                        'Current Assests',
+                    categories: ['Current Assests',
                         'Liability',
-                        'Gross Profit',
-                        'Total Revenue',
                         'EBITDA',
                         'Gross Margin',
-                        'Cash Equivalent'
-
-                    ],
-                    crosshair: true
-                }
-                ,
+                        'Cash Equivalent']
+                },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Amount (billions)'
+                        text: 'Stock Data'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                        }
                     }
-                }
-                ,
+                },
+                legend: {
+                    align: 'right',
+                    x: -30,
+                    verticalAlign: 'top',
+                    y: 25,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
+                },
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} bn</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                }
-                ,
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
                 plotOptions: {
                     column: {
-                        pointPadding: 0,
-                        borderWidth: 0
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                            style: {
+                                textShadow: '0 0 3px black'
+                            }
+                        }
                     }
-                }
-                ,
-                series: [{
-
-                    name: "<%= comp1[0].Year %>",
-                    data: [
-                        <%= comp1[0].Total_Current_Assets %>,
-                        <%= comp1[0].Total_Liabilities %>,
-                        <%= comp1[0].Gross_Margin %>,
-                        <%= comp1[0].total_revenue %>,
-                        <%= comp1[0].EBITDA %>,
-                        <%= comp1[0].Cash_and_Cash_Equivalents %>
-                    ]
-
-                }, {
-
-                    name: "<%= comp1[1].Year %>",
-                    data: [
-                        <%= comp1[1].Total_Current_Assets %>,
-                        <%= comp1[1].Total_Liabilities %>,
-                        <%= comp1[1].Gross_Margin %>,
-                        <%= comp1[1].total_revenue %>,
-                        <%= comp1[1].EBITDA %>,
-                        <%= comp1[1].Cash_and_Cash_Equivalents %>
-                    ]
                 },
-                    {
-
-                        name: "<%= comp1[2].Year %>",
-                        data: [
-                            <%= comp1[2].Total_Current_Assets %>,
-                            <%= comp1[2].Total_Liabilities %>,
-                            <%= comp1[2].Gross_Margin %>,
-                            <%= comp1[2].total_revenue %>,
-                            <%= comp1[2].EBITDA %>,
-                            <%= comp1[2].Cash_and_Cash_Equivalents %>
-                        ]
-                    }]
+                series: [{
+                    name: '<%= comp1[0].Company_Name.toString().toUpperCase() %>',
+                    data: [<%= comp1[0].Total_Current_Assets %>, <%= comp1[0].Total_Liabilities %>, <%= comp1[0].EBITDA %>, <%= comp1[0].Gross_Margin %>,<%= comp1[0].Cash_and_Cash_Equivalents %>]
+                }, {
+                    name: '<%= comp2[0].Company_Name.toString().toUpperCase() %>',
+                    data: [<%= comp2[0].Total_Current_Assets %>, <%= comp2[0].Total_Liabilities %>, <%= comp2[0].EBITDA %>, <%= comp2[0].Gross_Margin %>,<%= comp2[0].Cash_and_Cash_Equivalents %>]
+                }]
             });
             chart1.render();
 
