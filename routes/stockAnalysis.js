@@ -11,7 +11,6 @@ if (typeof localStorage === "undefined" || localStorage === null) {
 exports.getStats = function (req, res) {
 
 
-    console.log(localStorage.getItem('company1'));
     var compFirst = localStorage.getItem('company1');
     var compSecond = localStorage.getItem('company2');
     var getStats = "select * from mytable1 where Company_Name='" + compFirst + "' OR Company_Name='" + compSecond + "'";
