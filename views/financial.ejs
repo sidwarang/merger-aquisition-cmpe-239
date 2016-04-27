@@ -340,40 +340,6 @@
             });
             chart2.render();
 
-            var chart3 = new Highcharts.Chart({
-                chart: {
-                    renderTo:'container3',
-                    backgroundColor: '#EDEEFA',
-                    type: 'pie',
-                    options3d: {
-                        enabled: true,
-                        alpha: 45
-                    }
-                },
-                title: {
-                    text: 'Tweets Polarity'
-                },
-                subtitle: {
-                    text: "[ <%= comp1[0].Company_Name.toString().toUpperCase() %>" + " + " + "<%= comp2[0].Company_Name.toString().toUpperCase() %> ]"
-                },
-                plotOptions: {
-                    pie: {
-                        innerSize: 100,
-                        depth: 45
-                    }
-                },
-                series: [{
-                    name: 'Tweets Polarity',
-                    data: [
-                        ['Neutral', <%= polarity[2] %>],
-                        ['Negative', <%= polarity[1] %>],
-                        ['Positive', <%= polarity[0] %>]
-
-
-                    ]
-                }]
-            });
-            chart3.render();
             <%}%>
 
         });
@@ -395,7 +361,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/index">SB Admin v2.0</a>
+            <a class="navbar-brand" href="/index">Company Acquisition Merger</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -636,10 +602,10 @@
                         <a href="/sentiment"><i class="fa fa-dashboard fa-fw"></i> Sentiment Analysis</a>
                     </li>
                     <li>
-                        <a href="/company1"><i class="fa fa-dashboard fa-fw"></i> Company 1</a>
+                        <a href="/company1"><i class="fa fa-dashboard fa-fw"></i> <%= comp1[0].Company_Name.toString().toUpperCase() %></a>
                     </li>
                     <li>
-                        <a href="/company2"><i class="fa fa-dashboard fa-fw"></i> Company 2</a>
+                        <a href="/company2"><i class="fa fa-dashboard fa-fw"></i> <%= comp2[0].Company_Name.toString().toUpperCase() %></a>
                     </li>
                 </ul>
             </div>
