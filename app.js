@@ -29,7 +29,7 @@ app.get('/index', function (req, res) {
     res.render('stats');
 });
 
-app.post('/stock', stockAnalysis.getStats)
+app.get('/stock', stockAnalysis.getStats);
 
 app.get('/strategy', function (req, res) {
     res.render('strategy');
