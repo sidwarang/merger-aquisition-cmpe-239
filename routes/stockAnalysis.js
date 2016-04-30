@@ -2,7 +2,6 @@
  * Created by Siddharth on 4/26/2016.
  */
 var mysql = require('./mysql');
-var tweetStats = require('./twitterSearch');
 if (typeof localStorage === "undefined" || localStorage === null) {
     var LocalStorage = require('node-localstorage').LocalStorage;
     localStorage = new LocalStorage('./scratch');

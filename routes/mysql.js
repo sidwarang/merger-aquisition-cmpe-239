@@ -37,4 +37,4 @@ exports.fetchData = function (sqlQuery, callback) {
     });
     console.log("\nConnection closed..");
     connection.end();
-}
+};
