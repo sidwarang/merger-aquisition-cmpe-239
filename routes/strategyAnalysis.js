@@ -11,7 +11,7 @@ exports.getStats = function (req, res) {
     var compFirst = localStorage.getItem('compFirst');
     var compSecond = localStorage.getItem('compSecond');
 
-    mongo.getStats(res,'Han', 'Band', function (results) {
+    mongo.getStats(res,compFirst, compSecond, function (results) {
         console.log(results);
     });
 };
