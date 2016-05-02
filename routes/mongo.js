@@ -3,37 +3,15 @@
  */
 var mongoose = require('mongoose');
 var ejs = require('ejs');
-var Schema = mongoose.Schema;
+var Company = require('./company');
+var Rules = require('./rules');
 
 var data = {};
 
-function getCompanySchema() {
-    if(mongoose.connection.readyState!=1)
-        mongoose.connect('mongodb://localhost/cmpe239');
-    
-    var compSchema = new Schema({
-        name:String,
-        technologies: Array
-    });
-    
-    return mongoose.model('Technologies',compSchema);
-}
-
-function getRulesSchema() {
-    if(mongoose.connection.readyState!=1)
-        mongoose.connect('mongodb://localhost/cmpe239');
-
-    var ruleSchema = new Schema({
-        technologies: Array,
-        count : Number
-    });
-
-    return mongoose.model('Rules',ruleSchema);
-}
-
 exports.fetchData = function (callback) {
-    
-    var companySchema = getCompanySchema();
+    if(mongoose.connection.readyState!=1)
+         mongoose.connect('mongodb://localhost/cmpe239');
+    var companySchema = Company;
     
     var companies = [],
         count;
@@ -60,7 +38,9 @@ exports.fetchData = function (callback) {
 };
 
 exports.postData = function (rules, callback) {
-    var rulesSchema = getRulesSchema();
+    if(mongoose.connection.readyState!=1)
+         mongoose.connect('mongodb://localhost/cmpe239');
+    var rulesSchema = Rules;
 
     rulesSchema.collection.insert(rules, onInsert);
 
@@ -74,7 +54,9 @@ exports.postData = function (rules, callback) {
 };
 
 exports.getStats = function (res,compFirst, compSecond, callback) {
-    var companySchema = getCompanySchema();
+    if(mongoose.connection.readyState!=1)
+        mongoose.connect('mongodb://localhost/cmpe239');
+    var companySchema = Company;
     var rulesSchema;
     var techs1 = [];
     var techs2 = [];
@@ -92,7 +74,7 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
             console.log(comp);
             techs2 = comp[0].technologies;
 
-            rulesSchema = getRulesSchema();
+            rulesSchema = Rules;
             rulesSchema.count({}, function (err, cnt) {
                 if(err) throw err;
 
@@ -117,14 +99,22 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
 
 function getResult(techs, techs1, techs2) {
     console.log("data:\n" + techs1 + "\n" + techs2);
-    var results = 0,
-    techs1 = removeDuplicates(techs1, techs2);
-    console.log(techs1);
-    getCombos(techs1, techs2);
+    var results = 0;
+    if(techs1.length>techs2.length)
+        techs1 = removeDuplicates(techs1, techs2);
+    else
+        techs2 = removeDuplicates(techs2, techs1);
 
-    for(key in data) {
-        results += doCompare(data[key],techs);
-        console.log("results: " + results);
+    console.log("data: "+ techs1 + "\n" + techs2);
+    if(techs2.length==0)
+        results = doCompare(techs1, techs);
+    else  {
+        getCombos(techs1, techs2);
+        console.log(data);
+        for(key in data) {
+            results += doCompare(data[key],techs);
+            console.log("results: " + results);
+        }
     }
 
     results = results/23;
@@ -172,7 +162,8 @@ function removeDuplicates(techs1, techs2) {
                 }
             }
         }
-        result.push(techs1[j]);
+        if(j<techs1.length)
+            result.push(techs1[j]);
     }
     return result;
 }
@@ -196,7 +187,9 @@ function matchThem(one, two) {
 
 exports.fetchRules = function () {
 
-    var rulesSchema = getRulesSchema();
+    if(mongoose.connection.readyState!=1)
+        mongoose.connect('mongodb://localhost/cmpe239');
+    var rulesSchema = Rules;
 
     var rules = [],
         count;

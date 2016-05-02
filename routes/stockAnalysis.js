@@ -133,7 +133,7 @@ exports.getStats = function (req, res) {
             console.log("y1: " + year[0] + " y2: " + year[1] + " y3: " + year[2]);
             var finalPercent = parseInt(((year[0] + year[1] + year[2]) / 3));
             console.log("final percent: " + finalPercent);
-            
+            console.log(comp1);
             res.render('financial', {
                 data: rows,
                 comp1: comp1,

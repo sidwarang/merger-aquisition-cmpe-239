@@ -9,6 +9,7 @@ var analysis = require('./routes/analysis');
 var stockAnalysis = require('./routes/stockAnalysis');
 var tweetAnalysis = require('./routes/tweetAnalysis');
 var strategyAnalysis = require('./routes/strategyAnalysis');
+var companyAnalysis = require('./routes/companyAnalysis');
 var apriori = require('./routes/apriori');
 
 if (typeof localStorage === "undefined" || localStorage === null) {
@@ -49,17 +50,19 @@ app.get('/strategy', strategyAnalysis.getStats);
 
 app.get('/sentiment', tweetAnalysis.getStats);
 
+app.get('/company/:id', companyAnalysis.getStats);
+
 app.get('/apriori', apriori.getApriori);
 
 // app.get('/technologies', apriori.getStats);
 
-app.get('/company1', function (req, res) {
-    res.render('company1');
-});
-
-app.get('/company2', function (req, res) {
-    res.render('company2');
-});
+// app.get('/company1', function (req, res) {
+//     res.render('company1');
+// });
+//
+// app.get('/company2', function (req, res) {
+//     res.render('company2');
+// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
