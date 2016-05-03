@@ -3,10 +3,38 @@
  */
 var mongoose = require('mongoose');
 var ejs = require('ejs');
-var Company = require('./company');
+var Company = require('./company-old');
 var Rules = require('./rules');
+var MongoClient = require('mongodb').MongoClient;
+var db;
+var connected = false;
 
 var data = {};
+var techsData = {};
+var techsNames = [];
+var techsCounts = [];
+
+exports.connect = function(url, callback){
+    MongoClient.connect(url, function(err, _db){
+      if (err) { throw new Error('Could not connect: '+err); }
+      db = _db;
+      connected = true;
+      console.log(connected +" is connected?");
+      callback(db);
+    });
+};
+
+/**
+ * Returns the collection on the selected database
+ */
+
+ exports.collection = function(name){
+    if (!connected) {
+      throw new Error('Must connect to Mongo before calling "collection"');
+    } 
+    return db.collection(name);
+  
+};
 
 exports.fetchData = function (callback) {
     if(mongoose.connection.readyState!=1)
@@ -64,6 +92,8 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
     var count;
     var mapData = [];
     var mapKeys = [];
+        
+
     companySchema.find({ name: compFirst }, function(err, comp) {
         if (err) throw err;
 
@@ -94,6 +124,15 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
                                 mapKeys.push(key);
                                 mapData.push(data[key]);
                             }
+                            techsNames = [];
+                            techsCounts =[];
+                            localStorage.setItem('sentimentResult',result);
+                            for(key in techsData) {
+                                techsNames.push(key);
+                                techsCounts.push(techsData[key]);
+                            }
+
+                            console.log("techs:" + techsNames );
                             res.render('strategy', {
                                 result : result,
                                 techs : techs,
@@ -102,7 +141,9 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
                                 comp1: compFirst,
                                 comp2: compSecond,
                                 keys : mapKeys,
-                                data : mapData
+                                data : mapData,
+                                techsNames:techsNames,
+                                techsCounts: techsCounts
                             });
                             mongoose.connection.close();
                         }
@@ -177,12 +218,15 @@ function removeDuplicates(techs1, techs2) {
             if(j<techs1.length) {
                 if(techs2[i]==techs1[j]) {
                     console.log("duplicate removed: " + techs1[j]);
+                    techsData[techs1[j]] = 2;
                     j++;
                 }
             }
         }
-        if(j<techs1.length)
+        if(j<techs1.length) {
+            techsData[techs1[j]] = 1;
             result.push(techs1[j]);
+        }
     }
     return result;
 }

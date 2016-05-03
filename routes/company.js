@@ -152,7 +152,7 @@ exports.getStatsCompany = function (req, res) {
 
             polarity = result;
             var tweets = twits;
-            console.log("hello pol..." + polarity);
+            // console.log("hello pol..." + polarity);
 
             mysql.fetchData(getStats, function (err, rows) {
                 if (rows.length < 3) {
@@ -160,7 +160,7 @@ exports.getStatsCompany = function (req, res) {
                     console.log(err);
                 }
                 else {
-                    console.log("pol..." + polarity);
+                    // console.log("pol..." + polarity);
                     var comp1 = [];
                     for (var i = 0; i < rows.length; i++) {
                         if (rows[i].Company_Name === comp) {
@@ -190,17 +190,17 @@ exports.getStatsCompany = function (req, res) {
                     }
                     
                 	mongo.connect(mongoURL, function(){
-                		console.log('Connected to mongo at: ' + mongoURL);
+                		// console.log('Connected to mongo at: ' + mongoURL);
                 		var coll = mongo.collection('domainStack');
                 		
                 		coll.findOne({"companyName": comp}, function(err, companyDetails){
                 			if(companyDetails){
                 				
-                				console.log(companyDetails.companyName);
+                				// console.log(companyDetails.companyName);
                                 localStorage.setItem('polarity', polarity);
                                 localStorage.setItem('tweets', tweets);
                                 localStorage.setItem('set', 1);
-                                console.log(comp1[0]);
+                                // console.log(comp1[0]);
                                 res.send({
                                 	"status":"200",
                                     "rows": rows,

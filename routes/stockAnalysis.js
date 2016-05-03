@@ -90,8 +90,8 @@ exports.getStats = function (req, res) {
 
                 console.log("value Total_Current_Assets 1.." + comp1[i].Total_Current_Assets);
                 console.log("value Total_Current_Assets 2.." + comp2[i].Total_Current_Assets);
-                console.log("Company 1: " + JSON.stringify(comp1));
-                console.log("Company 2: " + JSON.stringify(comp2));
+                // console.log("Company 1: " + JSON.stringify(comp1));
+                // console.log("Company 2: " + JSON.stringify(comp2));
 
                 if (EV1[i] > 2 * EV2[i]) {
                     counter = counter + 1;
@@ -166,7 +166,8 @@ exports.getStats = function (req, res) {
             console.log("y1: " + year[0] + " y2: " + year[1] + " y3: " + year[2]);
             var finalPercent = parseInt(((year[0] + year[1] + year[2]) / 3));
             console.log("final percent: " + finalPercent);
-            console.log(comp1);
+            localStorage.setItem('stockResult',finalPercent);
+            // console.log(comp1);
             res.render('financial', {
                 data: rows,
                 comp1: comp1,

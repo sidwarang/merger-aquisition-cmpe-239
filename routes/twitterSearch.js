@@ -22,7 +22,7 @@ exports.getTweets = function getTweets(comp1, comp2, callback) {
     var twitQuery = comp1 + " " + comp2;
     twitterClient.get('search/tweets', {q: twitQuery, count: 50}, function (err, data) {
             var totalTweets = data.statuses;
-            console.log(JSON.stringify(totalTweets));
+            // console.log(JSON.stringify(totalTweets));
             for (var i = 0; i < totalTweets.length; i++) {
                 totalTweets[i].text = totalTweets[i].text.replace(/^RT/, "");
                 totalTweets[i].text = totalTweets[i].text.replace(/^ReTw/, "");
@@ -34,7 +34,7 @@ exports.getTweets = function getTweets(comp1, comp2, callback) {
                 //totalTweets[i].text = totalTweets[i].text.replace(/^\\s+|\\s+$/g, "");
 
                 tweets.push(totalTweets[i].text);
-                console.log(sentimentAnalysis(tweets[i]));
+                // console.log(sentimentAnalysis(tweets[i]));
                 if (sentimentAnalysis(tweets[i]) >= 2) {
                     positive++;
                 }
@@ -48,7 +48,7 @@ exports.getTweets = function getTweets(comp1, comp2, callback) {
             tweetsPolarity.push(positive);
             tweetsPolarity.push(negative);
             tweetsPolarity.push(neutral);
-            console.log(tweets);
+            // console.log(tweets);
             console.log("positive: " + positive + ", negative: " + negative + ", neutral: " + neutral);
             callback(err, tweetsPolarity, tweets);
         }
@@ -70,11 +70,11 @@ exports.getTweets1 = function getTweets(comp1, callback) {
     var tweetsPolarity = [];
     var twitQuery = comp1;
     
-    console.log(twitQuery);
+    // console.log(twitQuery);
     
     twitterClient.get('search/tweets', {q: twitQuery, count: 50}, function (err, data) {
             var totalTweets = data.statuses;
-            console.log(JSON.stringify(totalTweets));
+            // console.log(JSON.stringify(totalTweets));
             for (var i = 0; i < totalTweets.length; i++) {
                 totalTweets[i].text = totalTweets[i].text.replace(/^RT/, "");
                 totalTweets[i].text = totalTweets[i].text.replace(/^ReTw/, "");
@@ -86,7 +86,7 @@ exports.getTweets1 = function getTweets(comp1, callback) {
                 //totalTweets[i].text = totalTweets[i].text.replace(/^\\s+|\\s+$/g, "");
 
                 tweets.push(totalTweets[i].text);
-                console.log(sentimentAnalysis(tweets[i]));
+                // console.log(sentimentAnalysis(tweets[i]));
                 if (sentimentAnalysis(tweets[i]) >= 2) {
                     positive++;
                 }
@@ -100,7 +100,7 @@ exports.getTweets1 = function getTweets(comp1, callback) {
             tweetsPolarity.push(positive);
             tweetsPolarity.push(negative);
             tweetsPolarity.push(neutral);
-            console.log(tweets);
+            // console.log(tweets);
             console.log("positive: " + positive + ", negative: " + negative + ", neutral: " + neutral);
             callback(err, tweetsPolarity, tweets);
         }

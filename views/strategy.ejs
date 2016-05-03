@@ -68,25 +68,97 @@
             height: 350px;
         }
 
-        #container2 {
-            width		: 96%;
-            height		: 475px;
-            font-size	: 11px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-top:15px;
+        #container2{
+            width		: 100%;
+            height		: 400px;
         }
 
-        .amcharts-graph-g1 .amcharts-graph-fill {
-            filter: url(#blur);
+        .amcharts-graph-g2 .amcharts-graph-stroke {
+            stroke-dasharray: 3px 3px;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            -webkit-animation: am-moving-dashes 1s linear infinite;
+            animation: am-moving-dashes 1s linear infinite;
         }
 
-        .amcharts-graph-g2 .amcharts-graph-fill {
-            filter: url(#blur);
+        @-webkit-keyframes am-moving-dashes {
+            100% {
+                stroke-dashoffset: -31px;
+            }
+        }
+        @keyframes am-moving-dashes {
+            100% {
+                stroke-dashoffset: -31px;
+            }
         }
 
-        .amcharts-cursor-fill {
-            filter: url(#shadow);
+
+        .lastBullet {
+            -webkit-animation: am-pulsating 1s ease-out infinite;
+            animation: am-pulsating 1s ease-out infinite;
+        }
+        @-webkit-keyframes am-pulsating {
+            0% {
+                stroke-opacity: 1;
+                stroke-width: 0px;
+            }
+            100% {
+                stroke-opacity: 0;
+                stroke-width: 50px;
+            }
+        }
+        @keyframes am-pulsating {
+            0% {
+                stroke-opacity: 1;
+                stroke-width: 0px;
+            }
+            100% {
+                stroke-opacity: 0;
+                stroke-width: 50px;
+            }
+        }
+
+        .amcharts-graph-column-front {
+            -webkit-transition: all .3s .3s ease-out;
+            transition: all .3s .3s ease-out;
+        }
+        .amcharts-graph-column-front:hover {
+            fill: #496375;
+            stroke: #496375;
+            -webkit-transition: all .3s ease-out;
+            transition: all .3s ease-out;
+        }
+
+        .amcharts-graph-g3 {
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            stroke-dasharray: 500%;
+            stroke-dasharray: 0 \0/;    /* fixes IE prob */
+            stroke-dashoffset: 0 \0/;   /* fixes IE prob */
+            -webkit-animation: am-draw 40s;
+            animation: am-draw 40s;
+        }
+        @-webkit-keyframes am-draw {
+            0% {
+                stroke-dashoffset: 500%;
+            }
+            100% {
+                stroke-dashoffset: 0%;
+            }
+        }
+        @keyframes am-draw {
+            0% {
+                stroke-dashoffset: 500%;
+            }
+            100% {
+                stroke-dashoffset: 0%;
+            }
+        }
+        /* OVERWRITE OUR MAIN STYLE */
+
+        #container1 {
+            width: 100%;
+            height: 400px;
         }
 
     </style>
@@ -184,210 +256,224 @@
             }));
         });
 
-        var chartData = [{
-            "year": "2000",
-            "cars": 1691,
-            "motorcycles": 737
+        var chartData3 = [
+            {
+                "techs": "Java",
+                "company1": 227,
+                "company2": 408
+            },
+            {
+                "techs": "NodeJS",
+                "company1": 371,
+                "company2": 482
+            },
+            {
+                "techs": "Python",
+                "company1": 433,
+                "company2": 562
+            },
+            {
+                "techs": "JavaScript",
+                "company1": 345,
+                "company2": 379
+            },
+            {
+                "techs": "AngularJS",
+                "company1": 480,
+                "company2": 501
+            },
+            {
+                "techs": "MongoDB",
+                "company1": 386,
+                "company2": 443
+            },
+            {
+                "techs": "BigDATA",
+                "company1": 348,
+                "company2": 405
+            },
+            {
+                "techs": "R",
+                "company1": 238,
+                "company2": 309
+            },
+            {
+                "techs": "Unix"
+            },
+            {
+                "techs": "Perl"
+            }
+        ];
+        var chart = AmCharts.makeChart("container2", {
+            type: "serial",
+            dataProvider: chartData3,
 
-        }, {
-            "year": "2001",
-            "cars": 1098,
-            "motorcycles": 680,
-            "bicycles": 910
-        }, {
-            "year": "2002",
-            "cars": 975,
-            "motorcycles": 664,
-            "bicycles": 670
-        }, {
-            "year": "2003",
-            "cars": 1246,
-            "motorcycles": 648,
-            "bicycles": 930
-        }, {
-            "year": "2004",
-            "cars": 1218,
-            "motorcycles": 637,
-            "bicycles": 1010
-        }, {
-            "year": "2005",
-            "cars": 1913,
-            "motorcycles": 133,
-            "bicycles": 1770
-        }, {
-            "year": "2006",
-            "cars": 1299,
-            "motorcycles": 621,
-            "bicycles": 820
-        }, {
-            "year": "2007",
-            "cars": 1110,
-            "motorcycles": 10,
-            "bicycles": 1050
-        }, {
-            "year": "2008",
-            "cars": 765,
-            "motorcycles": 232,
-            "bicycles": 650
-        }, {
-            "year": "2009",
-            "cars": 1145,
-            "motorcycles": 219,
-            "bicycles": 780
-        }, {
-            "year": "2010",
-            "cars": 1163,
-            "motorcycles": 201,
-            "bicycles": 700
-        }, {
-            "year": "2011",
-            "cars": 1780,
-            "motorcycles": 85,
-            "bicycles": 1470
-        }, {
-            "year": "2012",
-            "cars": 1580,
-            "motorcycles": 285
-        }];
+            addClassNames: true,
+            startDuration: 1,
+            color: "#000000",
+            marginLeft: 0,
 
-        var chart =  AmCharts.makeChart("container2", {
-            "type": "serial",
-            "fontFamily": "Lato",
-            "autoMargins": true,
-            "addClassNames": true,
-            "zoomOutText": "",
-            "defs": {
-                "filter": [
-                    {
-                        "x": "-50%",
-                        "y": "-50%",
-                        "width": "200%",
-                        "height": "200%",
-                        "id": "blur",
-                        "feGaussianBlur": {
-                            "in": "SourceGraphic",
-                            "stdDeviation": "50"
-                        }
-                    },
-                    {
-                        "id": "shadow",
-                        "width": "150%",
-                        "height": "150%",
-                        "feOffset": {
-                            "result": "offOut",
-                            "in": "SourceAlpha",
-                            "dx": "2",
-                            "dy": "2"
-                        },
-                        "feGaussianBlur": {
-                            "result": "blurOut",
-                            "in": "offOut",
-                            "stdDeviation": "10"
-                        },
-                        "feColorMatrix": {
-                            "result": "blurOut",
-                            "type": "matrix",
-                            "values": "0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .2 0"
-                        },
-                        "feBlend": {
-                            "in": "SourceGraphic",
-                            "in2": "blurOut",
-                            "mode": "normal"
-                        }
-                    }
-                ]
+            categoryField: "techs",
+            categoryAxis: {
+                autoGridCount: false,
+                gridCount: 50,
+                gridAlpha: 0.1,
+                gridColor: "#000000",
+                axisColor: "#555555"
             },
-            "fontSize": 15,
-            "pathToImages": "../amcharts/images/",
-            "dataProvider": chartData,
-            "dataDateFormat": "YYYY",
-            "marginTop": 0,
-            "marginRight": 1,
-            "marginLeft": 0,
-            "autoMarginOffset": 5,
-            "categoryField": "year",
-            "categoryAxis": {
-                "gridAlpha": 0.07,
-                "axisColor": "#DADADA",
-                "startOnAxis": true,
-                "tickLength": 0,
-                "parseDates": true,
-                "minPeriod": "YYYY"
+
+            valueAxes: [{
+                id: "a1",
+                title: "companys",
+                gridAlpha: 0,
+                axisAlpha: 0
+            },{
+                id: "a2",
+                position: "right",
+                gridAlpha: 0,
+                axisAlpha: 0,
+                labelsEnabled: false
+            }],
+            graphs: [{
+                id: "g1",
+                valueField:  "company1",
+                title:  "company1",
+                type:  "column",
+                fillAlphas:  0.9,
+                valueAxis:  "a1",
+                balloonText:  "[[value]]",
+                legendValueText:  "[[value]]",
+                legendPeriodValueText:  "total: [[value.sum]]",
+                lineColor:  "#263138",
+                alphaField:  "alpha"
+            },{
+                id: "g3",
+                title: "company2",
+                valueField: "company2",
+                type: "line",
+                valueAxis: "a3",
+                lineColor: "#ff5755",
+                balloonText: "[[value]]",
+                lineThickness: 1,
+                legendValueText: "[[value]]",
+                bullet: "square",
+                bulletBorderColor: "#ff5755",
+                bulletBorderThickness: 1,
+                bulletBorderAlpha: 1,
+                dashLengthField: "dashLength",
+                animationPlayed: true
+            }],
+
+            chartCursor: {
+                zoomable: false,
+                categoryBalloonDateFormat: "DD",
+                cursorAlpha: 0,
+                valueBalloonsEnabled: false
             },
-            "valueAxes": [
-                {
-                    "ignoreAxisWidth":true,
-                    "stackType": "regular",
-                    "gridAlpha": 0.07,
-                    "axisAlpha": 0,
-                    "inside": true
-                }
-            ],
-            "graphs": [
-                {
-                    "id": "g1",
-                    "type": "line",
-                    "title": "Cars",
-                    "valueField": "cars",
-                    "fillColors": [
-                        "#0066e3",
-                        "#802ea9"
-                    ],
-                    "lineAlpha": 0,
-                    "fillAlphas": 0.8,
-                    "showBalloon": false
-                },
-                {
-                    "id": "g2",
-                    "type": "line",
-                    "title": "Motorcycles",
-                    "valueField": "motorcycles",
-                    "lineAlpha": 0,
-                    "fillAlphas": 0.8,
-                    "lineColor": "#5bb5ea",
-                    "showBalloon": false
-                },
-                {
-                    "id": "g3",
-                    "title": "Bicycles",
-                    "valueField": "bicycles",
-                    "lineAlpha": 0.5,
-                    "lineColor": "#FFFFFF",
-                    "bullet": "round",
-                    "dashLength": 2,
-                    "bulletBorderAlpha": 1,
-                    "bulletAlpha": 1,
-                    "bulletSize": 15,
-                    "stackable": false,
-                    "bulletColor": "#5d7ad9",
-                    "bulletBorderColor": "#FFFFFF",
-                    "bulletBorderThickness": 3,
-                    "balloonText": "<div style='margin-bottom:30px;text-shadow: 2px 2px rgba(0, 0, 0, 0.1); font-weight:200;font-size:30px; color:#ffffff'>[[value]]</div>"
-                }
-            ],
-            "chartCursor": {
-                "cursorAlpha": 1,
-                "zoomable": false,
-                "cursorColor": "#FFFFFF",
-                "categoryBalloonColor": "#8d83c8",
-                "fullWidth": true,
-                "categoryBalloonDateFormat": "YYYY",
-                "balloonPointerOrientation": "vertical"
-            },
-            "balloon": {
-                "borderAlpha": 0,
-                "fillAlpha": 0,
-                "shadowAlpha": 0,
-                "offsetX": 40,
-                "offsetY": -50
+            legend: {
+                bulletType: "round",
+                equalWidths: false,
+                valueWidth: 120,
+                useGraphSettings: true,
+                color: "#000000"
             }
         });
 
-        // we zoom chart in order to have better blur (form side to side)
-        chart.addListener("dataUpdated", zoomChart);
+        var chart2 = AmCharts.makeChart("container1", {
+            "type": "serial",
+            "theme": "light",
+            "precision": 0,
+            "valueAxes": [{
+                "id": "v1",
+                "title": "Values",
+                "position": "left",
+                "autoGridCount": false,
+                "labelFunction": function(value) {
+                    return Math.round(value);
+                }
+            }, {
+                "id": "v2",
+                "title": "Market Days",
+                "gridAlpha": 0,
+                "position": "right",
+                "autoGridCount": false
+            }],
+            "graphs": [{
+                "id": "g4",
+                "valueAxis": "v1",
+                "lineColor": "#62cf73",
+                "fillColors": "#62cf73",
+                "fillAlphas": 1,
+                "type": "column",
+                "title": "Frequency",
+                "valueField": "company2",
+                "clustered": false,
+                "columnWidth": 0.3,
+                "legendValueText": "$[[value]]",
+                "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"
+            }],
+            "chartCursor": {
+                "pan": true,
+                "valueLineEnabled": true,
+                "valueLineBalloonEnabled": true,
+                "cursorAlpha": 0,
+                "valueLineAlpha": 0.2
+            },
+            "categoryField": "cat",
+            "categoryAxis": {
+                "dashLength": 1,
+                "minorGridEnabled": true
+            },
+            "legend": {
+                "useGraphSettings": true,
+                "position": "top"
+            },
+            "balloon": {
+                "borderThickness": 1,
+                "shadowAlpha": 0
+            },
+            "export": {
+                "enabled": true
+            },
+            "dataProvider": [{
+                "cat": "'<%= keys[0] %>'",
+
+                "company2": parseInt(<%= data[0] %>)
+            }, {
+                "cat": "'<%= keys[1] %>'",
+
+
+                "company2": parseInt(<%= data[1] %>)
+            }, {
+                "cat": "'<%= keys[2] %>'",
+
+
+                "company2": parseInt(<%= data[2] %>)
+            }, {
+                "cat": "'<%= keys[3] %>'",
+
+
+                "company2": parseInt(<%= data[3] %>)
+            }, {
+                "cat": "'<%= keys[4] %>'",
+
+
+                "company2": parseInt(<%= data[4] %>)
+            }, {
+                "cat": "'<%= keys[5] %>'",
+
+
+                "company2": parseInt(<%= data[5] %>)
+            }, {
+                "cat": "'<%= keys[6] %>'",
+
+
+                "company2": parseInt(<%= data[6] %>)
+            }]
+        });
 
         function zoomChart(){
-            chart.zoomToIndexes(1, chartData.length - 2);
+            chart2.zoomToIndexes(1, chartData.length - 2);
         }
 
     </script>
@@ -407,253 +493,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/index">Company Acquisition Merger</a>
+            <a class="navbar-brand" href="/index">Venture Net</a>
         </div>
         <!-- /.navbar-header -->
 
-        <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-messages">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>Read All Messages</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-messages -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-tasks">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 1</strong>
-                                    <span class="pull-right text-muted">40% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                        <span class="sr-only">40% Complete (success)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 2</strong>
-                                    <span class="pull-right text-muted">20% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                        <span class="sr-only">20% Complete</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 3</strong>
-                                    <span class="pull-right text-muted">60% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                        <span class="sr-only">60% Complete (warning)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 4</strong>
-                                    <span class="pull-right text-muted">80% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                        <span class="sr-only">80% Complete (danger)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Tasks</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-tasks -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                <span class="pull-right text-muted small">12 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-tasks fa-fw"></i> New Task
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-alerts -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-user -->
-            </li>
-            <!-- /.dropdown -->
-        </ul>
-        <!-- /.navbar-top-links -->
 
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <!-- /input-group -->
-                    </li>
-                    <li>
-                        <a href="/getStats"><i class="fa fa-dashboard fa-fw"></i>Analysis</a>
-                    </li>
-                    <li>
-                        <a href="/stock"><i class="fa fa-dashboard fa-fw"></i> Stock Analysis</a>
-                    </li>
-                    <li>
-                        <a href="/strategy"><i class="fa fa-dashboard fa-fw"></i> Strategy Analysis</a>
-                    </li>
-                    <li>
-                        <a href="/sentiment"><i class="fa fa-dashboard fa-fw"></i> Sentiment Analysis</a>
-                    </li>
-                    <li>
-                        <a href="/company/1"><i class="fa fa-dashboard fa-fw"></i> <%= comp1.toString().toUpperCase() %></a>
-                    </li>
-                    <li>
-                        <a href="/company/2"><i class="fa fa-dashboard fa-fw"></i> <%= comp2.toString().toUpperCase() %></a>
-                    </li>
-                </ul>
+                <ul class="nav" id="side-menu"></ul>
             </div>
             <!-- /.sidebar-collapse -->
         </div>
@@ -671,7 +518,7 @@
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Default Panel
+                        Apriori Result
                     </div>
                     <div class="panel-body">
                         <div id="container1"></div>
@@ -681,7 +528,7 @@
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Default Panel
+                        Technology Comparison
                     </div>
                     <div class="panel-body">
                         <div id="container2"></div>
@@ -691,25 +538,21 @@
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
+            <div class="col-lg-3">
+
+            </div>
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Default Panel
+                        Prediction based on Strategic importance
                     </div>
                     <div class="panel-body">
                         <div id="container3"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Default Panel
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-                    </div>
-                </div>
+            <div class="col-lg-3">
+
             </div>
             <!-- /.col-lg-12 -->
         </div>

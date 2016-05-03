@@ -5,6 +5,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //var routesBase = require('./routes/index');
+var company = require('./routes/company');
 var analysis = require('./routes/analysis');
 var stockAnalysis = require('./routes/stockAnalysis');
 var tweetAnalysis = require('./routes/tweetAnalysis');
@@ -43,6 +44,18 @@ app.get('/getStats', analysis.getStats);
 app.get('/index', function (req, res) {
     res.render('stats');
 });
+
+app.get('/company1', function(req,res){
+	res.render('company1');
+});
+
+app.get('/company2', function (req, res) {
+    res.render('company2');
+});
+
+//app.post('/getCompanyDetails',company1.getStatsCompany1);
+
+app.post('/getCompanyDetails',company.getStatsCompany);
 
 app.get('/stock', stockAnalysis.getStats);
 

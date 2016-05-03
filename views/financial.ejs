@@ -60,7 +60,7 @@
 
         #container2 {
             width: 100%;
-            height: 500px;
+            height: 400px;
         }
     </style>
 
@@ -194,23 +194,23 @@
                         colorByPoint: true,
                         data: [{
                             name: 'Current Assets',
-                            y: parseInt(<%= comp1.assets_combined + comp2.assets_combined %>),
+                            y: parseInt(<%= (comp1.assets_combined + comp2.assets_combined)/6 %>),
                             drilldown: 'assets'
                         }, {
                             name: 'Liability',
-                            y: parseInt(<%= comp1.liability_combined + comp2.liability_combined %>),
+                            y: parseInt(<%= (comp1.liability_combined + comp2.liability_combined)/6 %>),
                             drilldown: 'liability'
                         }, {
                             name: 'Gross Margin',
-                            y: parseInt(<%= comp1.profit_combined + comp2.profit_combined %>),
+                            y: parseInt(<%= (comp1.profit_combined + comp2.profit_combined)/6 %>),
                             drilldown: 'margin'
                         }, {
                             name: 'EBITDA',
-                            y: parseInt(<%= comp1.ebitda_combined + comp2.ebitda_combined %>),
+                            y: parseInt(<%= (comp1.ebitda_combined + comp2.ebitda_combined)/6 %>),
                             drilldown: 'ebitda'
                         }, {
                             name: 'Cash and Cash Equivalents',
-                            y: parseInt(<%= comp1.cash_combined + comp2.cash_combined %>),
+                            y: parseInt(<%= (comp1.cash_combined + comp2.cash_combined)/6 %>),
                             drilldown: 'cash'
                         }
                         ]
@@ -221,11 +221,11 @@
                             name: 'Current Assets',
                             data: [{
                                 name: '<%= comp1[0].Company_Name %>',
-                                y: parseInt(<%= comp1.assets_combined %>),
+                                y: parseInt(<%= comp1.assets_combined/3 %>),
                                 drilldown: 'comp10'
                             }, {
                                 name: '<%= comp2[0].Company_Name %>',
-                                y: parseInt(<%= comp2.assets_combined %>),
+                                y: parseInt(<%= comp2.assets_combined/3 %>),
                                 drilldown: 'comp20'
                             }
 
@@ -235,11 +235,11 @@
                             name: 'Liability',
                             data: [{
                                 name: '<%= comp1[0].Company_Name %>',
-                                y: parseInt(<%= comp1.liability_combined %>),
+                                y: parseInt(<%= comp1.liability_combined/3 %>),
                                 drilldown: 'comp11'
                             }, {
                                 name: '<%= comp2[0].Company_Name %>',
-                                y: parseInt(<%= comp2.liability_combined %>),
+                                y: parseInt(<%= comp2.liability_combined/3 %>),
                                 drilldown: 'comp21'
                             }
 
@@ -249,11 +249,11 @@
                             name: 'Gross Margin',
                             data: [{
                                 name: '<%= comp1[0].Company_Name %>',
-                                y: parseInt(<%= comp1.profit_combined %>),
+                                y: parseInt(<%= comp1.profit_combined/3 %>),
                                 drilldown: 'comp12'
                             }, {
                                 name: '<%= comp2[0].Company_Name %>',
-                                y: parseInt(<%= comp2.profit_combined %>),
+                                y: parseInt(<%= comp2.profit_combined/3 %>),
                                 drilldown: 'comp22'
                             }
 
@@ -263,11 +263,11 @@
                             name: 'EBITDA',
                             data: [{
                                 name: '<%= comp1[0].Company_Name %>',
-                                y: parseInt(<%= comp1.ebitda_combined %>),
+                                y: parseInt(<%= comp1.ebitda_combined/3 %>),
                                 drilldown: 'comp14'
                             }, {
                                 name: '<%= comp2[0].Company_Name %>',
-                                y: parseInt(<%= comp2.ebitda_combined %>),
+                                y: parseInt(<%= comp2.ebitda_combined/3 %>),
                                 drilldown: 'comp24'
                             }
 
@@ -277,11 +277,11 @@
                             name: 'Cash and Cash Equivalents',
                             data: [{
                                 name: '<%= comp1[0].Company_Name %>',
-                                y: parseInt(<%= comp1.cash_combined %>),
+                                y: parseInt(<%= comp1.cash_combined/3 %>),
                                 drilldown: 'comp13'
                             }, {
                                 name: '<%= comp2[0].Company_Name %>',
-                                y: parseInt(<%= comp2.cash_combined %>),
+                                y: parseInt(<%= comp2.cash_combined/3 %>),
                                 drilldown: 'comp23'
                             }
 
@@ -310,9 +310,9 @@
                                 id: 'comp12',
                                 name: 'Gross Profit',
                                 data: [
-                                    {name: '2012', y: parseInt(<%= comp1[0].Gross_Profit %>)},
-                                    {name: '2013', y: parseInt(<%= comp1[1].Gross_Profit %>)},
-                                    {name: '2014', y: parseInt(<%= comp1[2].Gross_Profit %>)}
+                                    {name: '2012', y: parseInt(<%= comp1[0].Gross_Margin %>)},
+                                    {name: '2013', y: parseInt(<%= comp1[1].Gross_Margin %>)},
+                                    {name: '2014', y: parseInt(<%= comp1[2].Gross_Margin %>)}
                                 ]
                             },
                             {
@@ -392,11 +392,10 @@
         var chart2 = AmCharts.makeChart("container2", {
             "type": "serial",
             "theme": "light",
-            "dataDateFormat": "YYYY-MM-DD",
-            "precision": 2,
+            "precision": 0,
             "valueAxes": [{
                 "id": "v1",
-                "title": "Sales",
+                "title": "Values",
                 "position": "left",
                 "autoGridCount": false,
                 "labelFunction": function(value) {
@@ -416,8 +415,8 @@
                 "fillColors": "#e1ede9",
                 "fillAlphas": 1,
                 "type": "column",
-                "title": "Actual Sales",
-                "valueField": "sales2",
+                "title": "Company1",
+                "valueField": "company1",
                 "clustered": false,
                 "columnWidth": 0.5,
                 "legendValueText": "$[[value]]M",
@@ -429,59 +428,13 @@
                 "fillColors": "#62cf73",
                 "fillAlphas": 1,
                 "type": "column",
-                "title": "Target Sales",
-                "valueField": "sales1",
+                "title": "Company2",
+                "valueField": "company2",
                 "clustered": false,
                 "columnWidth": 0.3,
                 "legendValueText": "$[[value]]M",
                 "balloonText": "[[title]]<br/><b style='font-size: 130%'>$[[value]]M</b>"
-            }, {
-                "id": "g1",
-                "valueAxis": "v2",
-                "bullet": "round",
-                "bulletBorderAlpha": 1,
-                "bulletColor": "#FFFFFF",
-                "bulletSize": 5,
-                "hideBulletsCount": 50,
-                "lineThickness": 2,
-                "lineColor": "#20acd4",
-                "type": "smoothedLine",
-                "title": "Market Days",
-                "useLineColorForBulletBorder": true,
-                "valueField": "market1",
-                "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"
-            }, {
-                "id": "g2",
-                "valueAxis": "v2",
-                "bullet": "round",
-                "bulletBorderAlpha": 1,
-                "bulletColor": "#FFFFFF",
-                "bulletSize": 5,
-                "hideBulletsCount": 50,
-                "lineThickness": 2,
-                "lineColor": "#e1ede9",
-                "type": "smoothedLine",
-                "dashLength": 5,
-                "title": "Market Days ALL",
-                "useLineColorForBulletBorder": true,
-                "valueField": "market2",
-                "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"
             }],
-            "chartScrollbar": {
-                "graph": "g1",
-                "oppositeAxis": false,
-                "offset": 30,
-                "scrollbarHeight": 50,
-                "backgroundAlpha": 0,
-                "selectedBackgroundAlpha": 0.1,
-                "selectedBackgroundColor": "#888888",
-                "graphFillAlpha": 0,
-                "graphLineAlpha": 0.5,
-                "selectedGraphFillAlpha": 0,
-                "selectedGraphLineAlpha": 1,
-                "autoGridCount": true,
-                "color": "#AAAAAA"
-            },
             "chartCursor": {
                 "pan": true,
                 "valueLineEnabled": true,
@@ -489,9 +442,8 @@
                 "cursorAlpha": 0,
                 "valueLineAlpha": 0.2
             },
-            "categoryField": "date",
+            "categoryField": "cat",
             "categoryAxis": {
-                "parseDates": true,
                 "dashLength": 1,
                 "minorGridEnabled": true
             },
@@ -507,95 +459,29 @@
                 "enabled": true
             },
             "dataProvider": [{
-                "date": "2013-01-16",
-                "market1": 71,
-                "market2": 75,
-                "sales1": 5,
-                "sales2": 8
+                "cat": "Current Assets",
+                "company1": parseInt(<%= comp1.assets_combined/3 %>),
+                "company2": parseInt(<%= comp2.assets_combined/3 %>)
             }, {
-                "date": "2013-01-17",
-                "market1": 74,
-                "market2": 78,
-                "sales1": 4,
-                "sales2": 6
+                "cat": "Liability",
+
+                "company1": parseInt(<%= comp1.liability_combined/3 %>),
+                "company2": parseInt(<%= comp2.liability_combined/3 %>)
             }, {
-                "date": "2013-01-18",
-                "market1": 78,
-                "market2": 88,
-                "sales1": 5,
-                "sales2": 2
+                "cat": "Gross Margin",
+
+                "company1": parseInt(<%= comp1.profit_combined/3 %>),
+                "company2": parseInt(<%= comp2.profit_combined/3 %>)
             }, {
-                "date": "2013-01-19",
-                "market1": 85,
-                "market2": 89,
-                "sales1": 8,
-                "sales2": 9
+                "cat": "EBITDA",
+
+                "company1": parseInt(<%= comp1.ebitda_combined/3 %>),
+                "company2": parseInt(<%= comp2.ebitda_combined/3 %>)
             }, {
-                "date": "2013-01-20",
-                "market1": 82,
-                "market2": 89,
-                "sales1": 9,
-                "sales2": 6
-            }, {
-                "date": "2013-01-21",
-                "market1": 83,
-                "market2": 85,
-                "sales1": 3,
-                "sales2": 5
-            }, {
-                "date": "2013-01-22",
-                "market1": 88,
-                "market2": 92,
-                "sales1": 5,
-                "sales2": 7
-            }, {
-                "date": "2013-01-23",
-                "market1": 85,
-                "market2": 90,
-                "sales1": 7,
-                "sales2": 6
-            }, {
-                "date": "2013-01-24",
-                "market1": 85,
-                "market2": 91,
-                "sales1": 9,
-                "sales2": 5
-            }, {
-                "date": "2013-01-25",
-                "market1": 80,
-                "market2": 84,
-                "sales1": 5,
-                "sales2": 8
-            }, {
-                "date": "2013-01-26",
-                "market1": 87,
-                "market2": 92,
-                "sales1": 4,
-                "sales2": 8
-            }, {
-                "date": "2013-01-27",
-                "market1": 84,
-                "market2": 87,
-                "sales1": 3,
-                "sales2": 4
-            }, {
-                "date": "2013-01-28",
-                "market1": 83,
-                "market2": 88,
-                "sales1": 5,
-                "sales2": 7
-            }, {
-                "date": "2013-01-29",
-                "market1": 84,
-                "market2": 87,
-                "sales1": 5,
-                "sales2": 8
-            }, {
-                "date": "2013-01-30",
-                "market1": 81,
-                "market2": 85,
-                "sales1": 4,
-                "sales2": 7
+                "cat": "Cash an Cash Equivalent",
+
+                "company1": parseInt(<%= comp1.cash_combined/3 %>),
+                "company2": parseInt(<%= comp2.cash_combined/3 %>)
             }]
         });
 
@@ -616,238 +502,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/index">Company Acquisition Merger</a>
+            <a class="navbar-brand" href="/index">Venture Net</a>
         </div>
         <!-- /.navbar-header -->
 
-        <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-messages">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <strong>John Smith</strong>
-                                    <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
-                                    </span>
-                            </div>
-                            <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>Read All Messages</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-messages -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-tasks fa-fw"></i> <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-tasks">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 1</strong>
-                                    <span class="pull-right text-muted">40% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                                        <span class="sr-only">40% Complete (success)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 2</strong>
-                                    <span class="pull-right text-muted">20% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 20%">
-                                        <span class="sr-only">20% Complete</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 3</strong>
-                                    <span class="pull-right text-muted">60% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 60%">
-                                        <span class="sr-only">60% Complete (warning)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <p>
-                                    <strong>Task 4</strong>
-                                    <span class="pull-right text-muted">80% Complete</span>
-                                </p>
-                                <div class="progress progress-striped active">
-                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80"
-                                         aria-valuemin="0" aria-valuemax="100" style="width: 80%">
-                                        <span class="sr-only">80% Complete (danger)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Tasks</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-tasks -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                <span class="pull-right text-muted small">12 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-envelope fa-fw"></i> Message Sent
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-tasks fa-fw"></i> New Task
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-alerts -->
-            </li>
-            <!-- /.dropdown -->
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-                <!-- /.dropdown-user -->
-            </li>
-            <!-- /.dropdown -->
-        </ul>
-        <!-- /.navbar-top-links -->
+
 
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <!-- /input-group -->
-                    </li>
                     <li>
                         <a href="/getStats"><i class="fa fa-dashboard fa-fw"></i>Analysis</a>
                     </li>
@@ -861,12 +524,12 @@
                         <a href="/sentiment"><i class="fa fa-dashboard fa-fw"></i> Sentiment Analysis</a>
                     </li>
                     <li>
-                        <a href="/company/1"><i
+                        <a href="/company1"><i
                                     class="fa fa-dashboard fa-fw"></i> <%= comp1[0].Company_Name.toString().toUpperCase() %>
                         </a>
                     </li>
                     <li>
-                        <a href="/company/2"><i
+                        <a href="/company2"><i
                                     class="fa fa-dashboard fa-fw"></i> <%= comp2[0].Company_Name.toString().toUpperCase() %>
                         </a>
                     </li>
@@ -888,7 +551,7 @@
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Default Panel
+                        Stock Data Drilldown
                     </div>
                     <div class="panel-body">
                         <div id="container1"></div>
@@ -898,7 +561,7 @@
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Default Panel
+                        Stock Data Comparison
                     </div>
                     <div class="panel-body">
                         <div id="container2"></div>
@@ -908,26 +571,37 @@
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
+            <div class="col-lg-3">
+                <!--<div class="panel panel-default">-->
+                <!--<div class="panel-heading">-->
+                <!--Default Panel-->
+                <!--</div>-->
+                <!--<div class="panel-body">-->
+                <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae-->
+                <!--ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>-->
+                <!--</div>-->
+                <!--</div>-->
+            </div>
             <div class="col-lg-6">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        Default Panel
+                        Prediction based on Stock
                     </div>
                     <div class="panel-body">
                         <div id="container3"></div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        Default Panel
-                    </div>
-                    <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae
-                            ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
-                    </div>
-                </div>
+            <div class="col-lg-3">
+                <!--<div class="panel panel-default">-->
+                    <!--<div class="panel-heading">-->
+                        <!--Default Panel-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                        <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae-->
+                            <!--ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>-->
+                    <!--</div>-->
+                <!--</div>-->
             </div>
             <!-- /.col-lg-12 -->
         </div>

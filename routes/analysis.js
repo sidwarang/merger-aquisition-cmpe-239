@@ -9,6 +9,17 @@ exports.getStats = function (req, res) {
 
     var compFirst,
         compSecond;
+    var assets_combined_1 = 0,
+        liability_combined_1 = 0,
+        profit_combined_1 = 0,
+        ebitda_combined_1 = 0,
+        cash_combined_1 = 0,
+        assets_combined_2 = 0,
+        liability_combined_2 = 0,
+        profit_combined_2 = 0,
+        ebitda_combined_2 = 0,
+        cash_combined_2 = 0;
+
     if(localStorage.getItem('set')==1){
         compFirst = localStorage.getItem('compFirst');
         compSecond = localStorage.getItem('compSecond');
@@ -42,10 +53,10 @@ exports.getStats = function (req, res) {
                     var comp1 = [];
                     var comp2 = [];
                     for (var i = 0; i < rows.length; i++) {
-                        if (rows[i].Company_Name === compFirst) {
+                        if (rows[i].Company_Name.toLowerCase() === compFirst) {
                             comp1.push(rows[i]);
                         }
-                        else if (rows[i].Company_Name === compSecond) {
+                        else if (rows[i].Company_Name.toLowerCase() === compSecond) {
                             comp2.push(rows[i]);
                         }
 
@@ -63,6 +74,17 @@ exports.getStats = function (req, res) {
 
 
                     for (var i = 0; i < 3; i++) {
+
+                        assets_combined_1 += comp1[i].Total_Current_Assets;
+                        liability_combined_1 += comp1[i].Total_Liabilities;
+                        profit_combined_1 += comp1[i].Gross_Margin;
+                        ebitda_combined_1 += comp1[i].EBITDA;
+                        cash_combined_1 += comp1[i].Cash_and_Cash_Equivalents;
+                        assets_combined_2 += comp2[i].Total_Current_Assets;
+                        liability_combined_2 += comp2[i].Total_Liabilities;
+                        profit_combined_2 += comp2[i].Gross_Margin;
+                        ebitda_combined_2 += comp2[i].EBITDA;
+                        cash_combined_2 += comp2[i].Cash_and_Cash_Equivalents;
 
                         var counter = 0;
                         if (comp1.sector == comp2.sector) {
@@ -154,7 +176,26 @@ exports.getStats = function (req, res) {
                     localStorage.setItem('polarity', polarity);
                     localStorage.setItem('tweets', tweets);
                     localStorage.setItem('set', 1);
-                    console.log(comp1[0]);
+
+                    comp1.assets_combined = assets_combined_1;
+                    comp1.liability_combined = liability_combined_1;
+                    comp1.profit_combined = profit_combined_1;
+                    comp1.ebitda_combined = ebitda_combined_1;
+                    comp1.cash_combined = cash_combined_1;
+                    comp2.assets_combined = assets_combined_2;
+                    comp2.liability_combined = liability_combined_2;
+                    comp2.profit_combined = profit_combined_2;
+                    comp2.ebitda_combined = ebitda_combined_2;
+                    comp2.cash_combined = cash_combined_2;
+
+                    var strat = localStorage.getItem('sentimentResult');
+                    if(strat) {
+                        finalPercent = finalPercent+parseInt(strat);
+                        finalPercent = finalPercent/2;
+                    }
+                    else
+                        finalPercent = finalPercent;
+
                     res.render('stats', {
                         data: rows,
                         comp1: comp1,
