@@ -62,6 +62,8 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
     var techs2 = [];
     var techs = [];
     var count;
+    var mapData = [];
+    var mapKeys = [];
     companySchema.find({ name: compFirst }, function(err, comp) {
         if (err) throw err;
 
@@ -85,9 +87,23 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
                     tecs.forEach(function (tech) {
                         techs.push(tech);
                         if(techs.length==count) {
-                            result = getResult(techs, techs1, techs2);
+                            var result = getResult(techs, techs1, techs2);
                             callback(1);
-                            res.render('strategy');
+                            console.log(data);
+                            for(key in data) {
+                                mapKeys.push(key);
+                                mapData.push(data[key]);
+                            }
+                            res.render('strategy', {
+                                result : result,
+                                techs : techs,
+                                techs1 : techs1,
+                                techs2 : techs2,
+                                comp1: compFirst,
+                                comp2: compSecond,
+                                keys : mapKeys,
+                                data : mapData
+                            });
                             mongoose.connection.close();
                         }
                     });
@@ -100,6 +116,7 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
 function getResult(techs, techs1, techs2) {
     console.log("data:\n" + techs1 + "\n" + techs2);
     var results = 0;
+    var out = 0;
     if(techs1.length>techs2.length)
         techs1 = removeDuplicates(techs1, techs2);
     else
@@ -112,14 +129,16 @@ function getResult(techs, techs1, techs2) {
         getCombos(techs1, techs2);
         console.log(data);
         for(key in data) {
-            results += doCompare(data[key],techs);
+            out = doCompare(data[key],techs);
+            data[key] = out;
+            results += out;
             console.log("results: " + results);
         }
     }
 
-    results = results/23;
+    results = results/23; //to be changed
     console.log(results*100);
-
+    return results*100;
 }
 
 function doCompare(techs1, techs) {

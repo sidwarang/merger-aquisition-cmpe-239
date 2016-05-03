@@ -27,7 +27,23 @@
 
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#show").click(function () {
+                $("p").show();
+                $(container4).css('border', "3px solid #000000");
+                $(container4).css('width', "450px");
+                $(container4).css('height', "250px");
+            });
+        });
+    </script>
 
+    <style type="text/css">
+        .borderShadow {
+            box-shadow: 5px 5px 22px 0px #2C3E50;
+        }
+
+    </style>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
     <script src="http://code.highcharts.com/highcharts-3d.js"></script>
@@ -49,13 +65,285 @@
         }
     </style>
 
+
     <script type="text/javascript">
+        function generateMeterResults() {
+            var gaugeOptions = {
+
+                chart: {
+                    backgroundColor: '#EDEEFA',
+                    type: 'solidgauge'
+
+                },
+
+                title: null,
+
+                pane: {
+                    center: ['50%', '85%'],
+                    size: '140%',
+                    startAngle: -90,
+                    endAngle: 90,
+                    background: {
+                        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                        innerRadius: '60%',
+                        outerRadius: '100%',
+                        shape: 'arc'
+                    }
+                },
+
+                tooltip: {
+                    enabled: false
+                },
+
+                // the value axis
+                yAxis: {
+                    stops: [
+                        [0.1, '#DF5353'], // red
+                        [0.5, '#DDDF0D'], // yellow
+                        [0.9, '#55BF3B']  // green
+                    ],
+                    lineWidth: 0,
+                    minorTickInterval: null,
+                    tickPixelInterval: 400,
+                    tickWidth: 0,
+                    title: {
+                        y: -70
+                    },
+                    labels: {
+                        y: 16
+                    }
+                },
+
+                plotOptions: {
+                    solidgauge: {
+                        dataLabels: {
+                            y: 5,
+                            borderWidth: 0,
+                            useHTML: true
+                        }
+                    }
+                }
+            };
+
+            // The speed gauge
+            $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
+                yAxis: {
+                    min: 0,
+                    max: 100,
+                    title: {
+                        text: 'M&A Prediction'
+
+                    }
+                },
+
+                credits: {
+                    enabled: false
+                },
+
+                series: [{
+                    name: 'M&A Prediction',
+                    data: [<%= finalPercent %>],
+                    dataLabels: {
+                        format: '<div style="text-align:center"><span style="font-size:25px;color:' +
+                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
+                        '<span style="font-size:12px;color:silver">%</span></div>'
+                    },
+                    tooltip: {
+                        valueSuffix: '%'
+                    }
+                }]
+
+            }));
+        }
+
 
         $(function () {
+            <%  if (data.length > 0 && data != 'undefined' && data != null && data) {
+
+                console.log(JSON.stringify(data));
+            %>
+
+            var chart1 = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'container1',
+                    backgroundColor: '#EDEEFA',
+                    type: 'column'
+                },
+                title: {
+                    text: 'Stock Symbol: <%= comp1[0].Company_Name.toString().toUpperCase() %>'
+                },
+                /*  subtitle: {
+                 text: 'Source: WorldClimate.com'
+                 }, */
+
+                xAxis: {
+                    categories: [
+                        'Current Assests',
+                        'Liability',
+                        'Gross Profit',
+                        'Total Revenue',
+                        'EBITDA',
+                        'Gross Margin',
+                        'Cash Equivalent'
+
+                    ],
+                    crosshair: true
+                }
+                ,
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Amount (billions)'
+                    }
+                }
+                ,
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} bn</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                }
+                ,
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0
+                    }
+                }
+                ,
+                series: [{
+
+                    name: "<%= comp1[0].Year %>",
+                    data: [
+                        <%= comp1[0].Total_Current_Assets %>,
+                        <%= comp1[0].Total_Liabilities %>,
+                        <%= comp1[0].Gross_Margin %>,
+                        <%= comp1[0].total_revenue %>,
+                        <%= comp1[0].EBITDA %>,
+                        <%= comp1[0].Cash_and_Cash_Equivalents %>
+                    ]
+
+                }, {
+
+                    name: "<%= comp1[1].Year %>",
+                    data: [
+                        <%= comp1[1].Total_Current_Assets %>,
+                        <%= comp1[1].Total_Liabilities %>,
+                        <%= comp1[1].Gross_Margin %>,
+                        <%= comp1[1].total_revenue %>,
+                        <%= comp1[1].EBITDA %>,
+                        <%= comp1[1].Cash_and_Cash_Equivalents %>
+                    ]
+                },
+                    {
+
+                        name: "<%= comp1[2].Year %>",
+                        data: [
+                            <%= comp1[2].Total_Current_Assets %>,
+                            <%= comp1[2].Total_Liabilities %>,
+                            <%= comp1[2].Gross_Margin %>,
+                            <%= comp1[2].total_revenue %>,
+                            <%= comp1[2].EBITDA %>,
+                            <%= comp1[2].Cash_and_Cash_Equivalents %>
+                        ]
+                    }]
+            });
+            chart1.render();
+
+            var chart2 = new Highcharts.Chart({
+                chart: {
+                    renderTo:'container2',
+                    backgroundColor: '#EDEEFA',
+                    type: 'column'
+                },
+                title: {
+                    text: 'Stock Symbol: <%= comp2[0].Company_Name.toString().toUpperCase() %>'
+                },
+                /*  subtitle: {
+                 text: 'Source: WorldClimate.com'
+                 }, */
+
+                xAxis: {
+                    categories: [
+                        'Current Assests',
+                        'Liability',
+                        'Gross Profit',
+                        'Total Revenue',
+                        'EBITDA',
+                        'Gross Margin',
+                        'Cash Equivalent'
+
+                    ],
+                    crosshair: true
+                }
+                ,
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Amount (billions)'
+                    }
+                }
+                ,
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y:.1f} bn</b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                }
+                ,
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0
+                    }
+                }
+                ,
+                series: [{
+
+                    name: "<%= comp2[0].Year %>",
+                    data: [
+                        <%= comp2[0].Total_Current_Assets %>,
+                        <%= comp2[0].Total_Liabilities %>,
+                        <%= comp2[0].Gross_Margin %>,
+                        <%= comp2[0].total_revenue %>,
+                        <%= comp2[0].EBITDA %>,
+                        <%= comp2[0].Cash_and_Cash_Equivalents %>
+                    ]
+
+                }, {
+
+                    name: "<%= comp2[1].Year %>",
+                    data: [
+                        <%= comp2[1].Total_Current_Assets %>,
+                        <%= comp2[1].Total_Liabilities %>,
+                        <%= comp2[1].Gross_Margin %>,
+                        <%= comp2[1].total_revenue %>,
+                        <%= comp2[1].EBITDA %>,
+                        <%= comp2[1].Cash_and_Cash_Equivalents %>
+                    ]
+                },
+                    {
+
+                        name: "<%= comp2[2].Year %>",
+                        data: [
+                            <%= comp2[2].Total_Current_Assets %>,
+                            <%= comp2[2].Total_Liabilities %>,
+                            <%= comp2[2].Gross_Margin %>,
+                            <%= comp2[2].total_revenue %>,
+                            <%= comp2[2].EBITDA %>,
+                            <%= comp2[2].Cash_and_Cash_Equivalents %>
+                        ]
+                    }]
+            });
+            chart2.render();
 
             var chart3 = new Highcharts.Chart({
                 chart: {
-                    renderTo:'container2',
+                    renderTo:'container3',
                     backgroundColor: '#EDEEFA',
                     type: 'pie',
                     options3d: {
@@ -67,7 +355,7 @@
                     text: 'Tweets Polarity'
                 },
                 subtitle: {
-                    text: "[ <%= compFirst.toUpperCase() %>" + " + " + "<%= compSecond.toUpperCase() %> ]"
+                    text: "[ <%= comp1[0].Company_Name.toString().toUpperCase() %>" + " + " + "<%= comp2[0].Company_Name.toString().toUpperCase() %> ]"
                 },
                 plotOptions: {
                     pie: {
@@ -87,6 +375,7 @@
                 }]
             });
             chart3.render();
+            <%}%>
 
         });
 
@@ -107,7 +396,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/index">Company Acquisition Merger</a>
+            <a class="navbar-brand" href="/index">SB Admin v2.0</a>
         </div>
         <!-- /.navbar-header -->
 
@@ -348,10 +637,10 @@
                         <a href="/sentiment"><i class="fa fa-dashboard fa-fw"></i> Sentiment Analysis</a>
                     </li>
                     <li>
-                        <a href="/company/1"><i class="fa fa-dashboard fa-fw"></i> <%= compFirst.toUpperCase() %> Data</a>
+                        <a href="/company/1"><i class="fa fa-dashboard fa-fw"></i> Company 1</a>
                     </li>
                     <li>
-                        <a href="/company/2"><i class="fa fa-dashboard fa-fw"></i> <%= compSecond.toUpperCase() %> Data</a>
+                        <a href="/company/2"><i class="fa fa-dashboard fa-fw"></i> Company 2</a>
                     </li>
                 </ul>
             </div>
@@ -363,39 +652,18 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Sentiment Overview</h1>
+                <h1 class="page-header">Company 1 Data</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         <div class="row">
             <div class="col-lg-6">
-                <div class="panel panel-primary">
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        Tweets Panel
+                        Default Panel
                     </div>
-                    <div id="tweetBox" class="pull-right borderShadow">
-                        <div class="scrollit">
-                            <table border="1">
-                                            <% for(var i = 0;i < tweets.length; i++) { %>
-                                            <tr>
-                                                <td style="padding-left: 10px;"><p>
-
-                                                    <div class="row" style="background: #FAFAFA">
-                                                        <div class="col-xs-2">
-                                                            <img src="images/tweet.png" width="40px" height="40px">
-                                                        </div>
-                                                        <div class="col-xs-9">
-                                                            <font face="Comic Sans MS">
-                                                                <%= tweets[i] %>
-                                                                </font>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <% } %>
-
-                            </table>
-                        </div>
+                    <div class="panel-body">
+                        <div id="container1"></div>
                     </div>
                 </div>
             </div>
@@ -411,29 +679,29 @@
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <!--<div class="row">-->
-            <!--<div class="col-lg-6">-->
-                <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                        <!--Default Panel-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                        <!--<div id="container3"></div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="col-lg-6">-->
-                <!--<div class="panel panel-default">-->
-                    <!--<div class="panel-heading">-->
-                        <!--Default Panel-->
-                    <!--</div>-->
-                    <!--<div class="panel-body">-->
-                        <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--&lt;!&ndash; /.col-lg-12 &ndash;&gt;-->
-        <!--</div>-->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Default Panel
+                    </div>
+                    <div class="panel-body">
+                        <div id="container3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Default Panel
+                    </div>
+                    <div class="panel-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
 
         <!-- /.row -->
     </div>
@@ -456,6 +724,7 @@
 
 <!-- Custom Theme JavaScript -->
 <script src="js/sb-admin-2.js"></script>
+
 
 </body>
 

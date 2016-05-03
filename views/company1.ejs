@@ -9,24 +9,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="">
 
-
-    <!-- Bootstrap Core CSS -->
+	<script type="text/javascript" src="/js/angular-fusioncharts.min.js"></script>
+	
+	
+   
     <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- MetisMenu CSS -->
+   
     <link href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
-    <!-- Timeline CSS -->
+
     <link href="css/timeline.css" rel="stylesheet">
 
-    <!-- Custom CSS -->
+
     <link href="css/sb-admin-2.css" rel="stylesheet">
 
-    <!-- Custom Fonts -->
+
     <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
+    
+    
+   	<script type="text/javascript" src="/js/fusioncharts.js"></script>
+<script type="text/javascript" src="/js/themes/fusioncharts.theme.fint.js"></script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/angular-fusioncharts.min.js"></script>
+    
+    
     <script>
         $(document).ready(function () {
             $("#show").click(function () {
@@ -51,7 +64,7 @@
     <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
 
-    <!--<link rel="shortcut icon" href="assets/images/gt_favicon.png">-->
+    <link rel="shortcut icon" href="assets/images/gt_favicon.png">
     <style type="text/css">
         .chartSize {
             height: 100%;
@@ -64,284 +77,200 @@
             height: 350px;
         }
     </style>
+    
+    
+    <script>
+    
+    
+    	var company = angular.module("company1_app",["ng-fusioncharts"]);
+        company.controller('company1_controller', function($scope,$http,$window){
+        
+        	
+        	$http({
+    			method:'POST',
+    			url:'/getCompanyDetails',
+    			data:{"id":"1"}
+    		}).then(function(res){
+    			if(res.data.status == "200"){
+					//alert(comp1[0].Company_Name.toString().toUpperCase());
+    				data = res.data.companyDetails.domain;
+					$scope.location = res.data.companyDetails.location;
+    				$scope.company1 = res.data.company1Name.toString().toUpperCase();
+    				$scope.company2 = res.data.company2Name.toString().toUpperCase();
+    				$scope.chart = {"caption":"Revenue Increment in different domains","subCaption":res.data.companyDetails.companyName.toString().toUpperCase(),"xAxisName":"Domain Name","yAxisName":"Revenue percent increase","data":data};
+    				$scope.chart2_Create();
+    				chart1_Create(res.data.comp1);    				
+    				chart3_Create(res.data.comp1,res.data.tweets,res.data.polarity);
+					$scope.createChart4();
+    			}else{
+    				
+    			}
+    			
+    		})
+        	
+    		 $scope.chart2_Create = function(){
+       		 FusionCharts.ready(function(){
+       			  var chart2 = new FusionCharts({
+       			      "type": "column2d",
+       			      "renderAt": "container2",
+       			      "width": "452",
+       			      "height": "400",
+       			      "dataFormat": "json",
+       			      "dataSource":  {
+       			    	   "chart": {
+       			    	        "caption":  $scope.chart.caption, 
+       			    	        "subCaption": $scope.chart.subCaption,
+       			    	        "xAxisName": $scope.chart.xAxisName,
+       			    	        "yAxisName": $scope.chart.yAxisName,
+       			    	        "lineThickness": "2",
+       			    	        "paletteColors": "#0075c2",
+       			    	        "baseFontColor": "#333333",
+       			    	        "baseFont": "Helvetica Neue,Arial",
+       			    	        "captionFontSize": "14",
+       			    	        "subcaptionFontSize": "14",
+       			    	        "subcaptionFontBold": "0",
+       			    	        "showBorder": "0",
+       			    	        "bgColor": "#ffffff",
+       			    	        "showShadow": "0",
+       			    	        "canvasBgColor": "#ffffff",
+       			    	        "canvasBorderAlpha": "0",
+       			    	        "divlineAlpha": "100",
+       			    	        "divlineColor": "#999999",
+       			    	        "divlineThickness": "1",
+       			    	        "divLineDashed": "1",
+       			    	        "divLineDashLen": "1",
+       			    	        "divLineGapLen": "1",
+       			    	        "showXAxisLine": "1",
+       			    	        "xAxisLineThickness": "1",
+       			    	        "xAxisLineColor": "#999999",
+       			    	        "showAlternateHGridColor": "0"
+       			    	    },
+       			    	    "data":$scope.chart.data
+       			    	   }
+       			});
+       			chart2.render();
+       			}) 
+       	} 
+		
+		
+		$scope.createChart4 = function(){
+		
+		FusionCharts.ready(function () {
+		var locationMap = new FusionCharts({
+        type: 'maps/usa',
+        renderAt: 'container4',
+        width: '452',
+        height: '400',
+        dataFormat: 'json',
+        dataSource: {
+            "chart": {
+                "caption": "Company Location",
+                "subcaption": "", 
+                "borderColor": "#DDDDDDD",
+                "showLabels": "1",               
+                
+                "numberScaleValue": "1,1000,1000",
+                "numberScaleUnit": "K,M,B",
+                "numberPrefix": "$",
+                "entityFillHoverColor": "#d35400",
+                "entityFillHoverAlpha": "30",
+                "theme" : "fint"
+            },
+            "colorrange": {
+                "gradient": "1",
+                "startLabel": "",
+                "endLabel": "",
+                "code": "#f39c12",
+                "minvalue": "",
+                "maxValue": "" 
+            },
+            "data": $scope.location
+        }
+    });
+    locationMap.render();
+});
+		
+		
+		}
+		
 
-
-    <script type="text/javascript">
-        function generateMeterResults() {
-            var gaugeOptions = {
-
+        });
+    	
+    
+        
+        function chart1_Create(comp1){
+        	
+        	
+        	var chart1 = new Highcharts.Chart({
                 chart: {
-                    backgroundColor: '#EDEEFA',
-                    type: 'solidgauge'
-
+                    type: 'column',
+                    renderTo: 'container1'
                 },
-
-                title: null,
-
-                pane: {
-                    center: ['50%', '85%'],
-                    size: '140%',
-                    startAngle: -90,
-                    endAngle: 90,
-                    background: {
-                        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-                        innerRadius: '60%',
-                        outerRadius: '100%',
-                        shape: 'arc'
-                    }
+				title: {
+                    text: 'Stock data'
                 },
-
-                tooltip: {
-                    enabled: false
+                subtitle: {
+                    text:  comp1[0].Company_Name.toString().toUpperCase()
                 },
-
-                // the value axis
+                xAxis: {
+                    categories: ['Current Assests',
+                        'Liability',
+                        'EBITDA',
+                        'Gross Margin',
+                        'Cash Equivalent']
+                },
                 yAxis: {
-                    stops: [
-                        [0.1, '#DF5353'], // red
-                        [0.5, '#DDDF0D'], // yellow
-                        [0.9, '#55BF3B']  // green
-                    ],
-                    lineWidth: 0,
-                    minorTickInterval: null,
-                    tickPixelInterval: 400,
-                    tickWidth: 0,
+                    min: 0,
                     title: {
-                        y: -70
+                        text: 'Stock Data'
                     },
-                    labels: {
-                        y: 16
-                    }
-                },
-
-                plotOptions: {
-                    solidgauge: {
-                        dataLabels: {
-                            y: 5,
-                            borderWidth: 0,
-                            useHTML: true
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                         }
                     }
-                }
-            };
-
-            // The speed gauge
-            $('#container-speed').highcharts(Highcharts.merge(gaugeOptions, {
-                yAxis: {
-                    min: 0,
-                    max: 100,
-                    title: {
-                        text: 'M&A Prediction'
-
-                    }
                 },
-
-                credits: {
-                    enabled: false
+                legend: {
+                    align: 'right',
+                    x: -30,
+                    verticalAlign: 'top',
+                    y: 25,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
                 },
-
-                series: [{
-                    name: 'M&A Prediction',
-                    data: [<%= finalPercent %>],
-                    dataLabels: {
-                        format: '<div style="text-align:center"><span style="font-size:25px;color:' +
-                        ((Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black') + '">{y}</span><br/>' +
-                        '<span style="font-size:12px;color:silver">%</span></div>'
-                    },
-                    tooltip: {
-                        valueSuffix: '%'
-                    }
-                }]
-
-            }));
-        }
-
-
-        $(function () {
-            <%  if (data.length > 0 && data != 'undefined' && data != null && data) {
-
-                console.log(JSON.stringify(data));
-            %>
-
-            var chart1 = new Highcharts.Chart({
-                chart: {
-                    renderTo: 'container1',
-                    backgroundColor: '#EDEEFA',
-                    type: 'column'
-                },
-                title: {
-                    text: 'Stock Symbol: <%= comp1[0].Company_Name.toString().toUpperCase() %>'
-                },
-                /*  subtitle: {
-                 text: 'Source: WorldClimate.com'
-                 }, */
-
-                xAxis: {
-                    categories: [
-                        'Current Assests',
-                        'Liability',
-                        'Gross Profit',
-                        'Total Revenue',
-                        'EBITDA',
-                        'Gross Margin',
-                        'Cash Equivalent'
-
-                    ],
-                    crosshair: true
-                }
-                ,
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Amount (billions)'
-                    }
-                }
-                ,
                 tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} bn</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                }
-                ,
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
                 plotOptions: {
                     column: {
-                        pointPadding: 0,
-                        borderWidth: 0
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                            style: {
+                                textShadow: '0 0 3px black'
+                            }
+                        }
                     }
-                }
-                ,
-                series: [{
-
-                    name: "<%= comp1[0].Year %>",
-                    data: [
-                        <%= comp1[0].Total_Current_Assets %>,
-                        <%= comp1[0].Total_Liabilities %>,
-                        <%= comp1[0].Gross_Margin %>,
-                        <%= comp1[0].total_revenue %>,
-                        <%= comp1[0].EBITDA %>,
-                        <%= comp1[0].Cash_and_Cash_Equivalents %>
-                    ]
-
-                }, {
-
-                    name: "<%= comp1[1].Year %>",
-                    data: [
-                        <%= comp1[1].Total_Current_Assets %>,
-                        <%= comp1[1].Total_Liabilities %>,
-                        <%= comp1[1].Gross_Margin %>,
-                        <%= comp1[1].total_revenue %>,
-                        <%= comp1[1].EBITDA %>,
-                        <%= comp1[1].Cash_and_Cash_Equivalents %>
-                    ]
                 },
-                    {
-
-                        name: "<%= comp1[2].Year %>",
-                        data: [
-                            <%= comp1[2].Total_Current_Assets %>,
-                            <%= comp1[2].Total_Liabilities %>,
-                            <%= comp1[2].Gross_Margin %>,
-                            <%= comp1[2].total_revenue %>,
-                            <%= comp1[2].EBITDA %>,
-                            <%= comp1[2].Cash_and_Cash_Equivalents %>
-                        ]
-                    }]
+                series: [{
+                    name:  comp1[0].Company_Name.toString().toUpperCase() ,
+                    data: [ comp1[0].Total_Current_Assets, comp1[0].Total_Liabilities , comp1[0].EBITDA , comp1[0].Gross_Margin ,comp1[0].Cash_and_Cash_Equivalents]
+                }]
             });
             chart1.render();
-
-            var chart2 = new Highcharts.Chart({
-                chart: {
-                    renderTo:'container2',
-                    backgroundColor: '#EDEEFA',
-                    type: 'column'
-                },
-                title: {
-                    text: 'Stock Symbol: <%= comp2[0].Company_Name.toString().toUpperCase() %>'
-                },
-                /*  subtitle: {
-                 text: 'Source: WorldClimate.com'
-                 }, */
-
-                xAxis: {
-                    categories: [
-                        'Current Assests',
-                        'Liability',
-                        'Gross Profit',
-                        'Total Revenue',
-                        'EBITDA',
-                        'Gross Margin',
-                        'Cash Equivalent'
-
-                    ],
-                    crosshair: true
-                }
-                ,
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: 'Amount (billions)'
-                    }
-                }
-                ,
-                tooltip: {
-                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} bn</b></td></tr>',
-                    footerFormat: '</table>',
-                    shared: true,
-                    useHTML: true
-                }
-                ,
-                plotOptions: {
-                    column: {
-                        pointPadding: 0,
-                        borderWidth: 0
-                    }
-                }
-                ,
-                series: [{
-
-                    name: "<%= comp2[0].Year %>",
-                    data: [
-                        <%= comp2[0].Total_Current_Assets %>,
-                        <%= comp2[0].Total_Liabilities %>,
-                        <%= comp2[0].Gross_Margin %>,
-                        <%= comp2[0].total_revenue %>,
-                        <%= comp2[0].EBITDA %>,
-                        <%= comp2[0].Cash_and_Cash_Equivalents %>
-                    ]
-
-                }, {
-
-                    name: "<%= comp2[1].Year %>",
-                    data: [
-                        <%= comp2[1].Total_Current_Assets %>,
-                        <%= comp2[1].Total_Liabilities %>,
-                        <%= comp2[1].Gross_Margin %>,
-                        <%= comp2[1].total_revenue %>,
-                        <%= comp2[1].EBITDA %>,
-                        <%= comp2[1].Cash_and_Cash_Equivalents %>
-                    ]
-                },
-                    {
-
-                        name: "<%= comp2[2].Year %>",
-                        data: [
-                            <%= comp2[2].Total_Current_Assets %>,
-                            <%= comp2[2].Total_Liabilities %>,
-                            <%= comp2[2].Gross_Margin %>,
-                            <%= comp2[2].total_revenue %>,
-                            <%= comp2[2].EBITDA %>,
-                            <%= comp2[2].Cash_and_Cash_Equivalents %>
-                        ]
-                    }]
-            });
-            chart2.render();
-
-            var chart3 = new Highcharts.Chart({
+       }
+    
+    
+        function chart3_Create(comp1,tweets,polarity){
+        	
+        	var chart3 = new Highcharts.Chart({
                 chart: {
                     renderTo:'container3',
                     backgroundColor: '#EDEEFA',
@@ -355,7 +284,7 @@
                     text: 'Tweets Polarity'
                 },
                 subtitle: {
-                    text: "[ <%= comp1[0].Company_Name.toString().toUpperCase() %>" + " + " + "<%= comp2[0].Company_Name.toString().toUpperCase() %> ]"
+                    text:  comp1[0].Company_Name.toString().toUpperCase()
                 },
                 plotOptions: {
                     pie: {
@@ -366,28 +295,28 @@
                 series: [{
                     name: 'Tweets Polarity',
                     data: [
-                        ['Neutral', <%= polarity[2] %>],
-                        ['Negative', <%= polarity[1] %>],
-                        ['Positive', <%= polarity[0] %>]
+                        ['Neutral', polarity[2]],
+                        ['Negative', polarity[1]] ,
+                        ['Positive', polarity[0]]
 
 
                     ]
                 }]
             });
             chart3.render();
-            <%}%>
-
-        });
-
-    </script>
+         }
+    
+     </script>
+    
+    
 
 </head>
 
-<body>
+<body ng-app="company1_app" ng-controller="company1_controller">
 
 <div id="wrapper">
 
-    <!-- Navigation -->
+    
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -396,10 +325,9 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/index">SB Admin v2.0</a>
+            <a class="navbar-brand" href="/index">Company Acquisition Merger</a>
         </div>
-        <!-- /.navbar-header -->
-
+       
         <ul class="nav navbar-top-links navbar-right">
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -449,9 +377,9 @@
                         </a>
                     </li>
                 </ul>
-                <!-- /.dropdown-messages -->
+                
             </li>
-            <!-- /.dropdown -->
+           
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -528,9 +456,9 @@
                         </a>
                     </li>
                 </ul>
-                <!-- /.dropdown-tasks -->
+               
             </li>
-            <!-- /.dropdown -->
+           
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -588,9 +516,8 @@
                         </a>
                     </li>
                 </ul>
-                <!-- /.dropdown-alerts -->
+                
             </li>
-            <!-- /.dropdown -->
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
@@ -604,11 +531,10 @@
                     <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                     </li>
                 </ul>
-                <!-- /.dropdown-user -->
+                
             </li>
-            <!-- /.dropdown -->
+
         </ul>
-        <!-- /.navbar-top-links -->
 
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
@@ -622,7 +548,6 @@
                                 </button>
                             </span>
                         </div>
-                        <!-- /input-group -->
                     </li>
                     <li>
                         <a href="/getStats"><i class="fa fa-dashboard fa-fw"></i>Analysis</a>
@@ -637,24 +562,21 @@
                         <a href="/sentiment"><i class="fa fa-dashboard fa-fw"></i> Sentiment Analysis</a>
                     </li>
                     <li>
-                        <a href="/company/1"><i class="fa fa-dashboard fa-fw"></i> Company 1</a>
+                        <a href="/company1"><i class="fa fa-dashboard fa-fw"></i> {{company1}} </a>
                     </li>
                     <li>
-                        <a href="/company/2"><i class="fa fa-dashboard fa-fw"></i> Company 2</a>
+                        <a href="/company2"><i class="fa fa-dashboard fa-fw"></i> {{company2}} </a>
                     </li>
                 </ul>
             </div>
-            <!-- /.sidebar-collapse -->
         </div>
-        <!-- /.navbar-static-side -->
     </nav>
 
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Company 1 Data</h1>
+                <h1 class="page-header">Analysis Overview</h1>
             </div>
-            <!-- /.col-lg-12 -->
         </div>
         <div class="row">
             <div class="col-lg-6">
@@ -673,11 +595,11 @@
                         Default Panel
                     </div>
                     <div class="panel-body">
-                        <div id="container2"></div>
+                        <div id="container2" ng-model="container2"></div>
                     </div>
                 </div>
             </div>
-            <!-- /.col-lg-12 -->
+            
         </div>
         <div class="row">
             <div class="col-lg-6">
@@ -696,36 +618,41 @@
                         Default Panel
                     </div>
                     <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.</p>
+                        <div id="container4" ng-model="container4"></div>
                     </div>
                 </div>
             </div>
-            <!-- /.col-lg-12 -->
+          
         </div>
 
-        <!-- /.row -->
+        
     </div>
-    <!-- /#page-wrapper -->
+    /#page-wrapper
 
 </div>
-<!-- /#wrapper -->
 
-<!-- jQuery -->
 <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 
-<!-- Bootstrap Core JavaScript -->
+
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<!-- Metis Menu Plugin JavaScript -->
+
 <script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-<!-- Morris Charts JavaScript -->
+
 <script src="js/raphael-min.js"></script>
 
-<!-- Custom Theme JavaScript -->
+
 <script src="js/sb-admin-2.js"></script>
 
 
 </body>
 
 </html>
+ 
+ 
+ 
+ 
+ 
+ 
+ 

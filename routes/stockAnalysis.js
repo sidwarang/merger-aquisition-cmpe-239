@@ -41,9 +41,30 @@ exports.getStats = function (req, res) {
             var debt_equity1 = [];
             var debt_equity2 = [];
             var year = [];
+            var assets_combined_1 = 0,
+                liability_combined_1 = 0,
+                profit_combined_1 = 0,
+                ebitda_combined_1 = 0,
+                cash_combined_1 = 0,
+                assets_combined_2 = 0,
+                liability_combined_2 = 0,
+                profit_combined_2 = 0,
+                ebitda_combined_2 = 0,
+                cash_combined_2 = 0;
 
 
             for (var i = 0; i < 3; i++) {
+
+                assets_combined_1 += comp1[i].Total_Current_Assets;
+                liability_combined_1 += comp1[i].Total_Liabilities;
+                profit_combined_1 += comp1[i].Gross_Margin;
+                ebitda_combined_1 += comp1[i].EBITDA;
+                cash_combined_1 += comp1[i].Cash_and_Cash_Equivalents;
+                assets_combined_2 += comp2[i].Total_Current_Assets;
+                liability_combined_2 += comp2[i].Total_Liabilities;
+                profit_combined_2 += comp2[i].Gross_Margin;
+                ebitda_combined_2 += comp2[i].EBITDA;
+                cash_combined_2 += comp2[i].Cash_and_Cash_Equivalents;
 
                 var counter = 0;
                 if (comp1.sector == comp2.sector) {
@@ -130,6 +151,18 @@ exports.getStats = function (req, res) {
 
 
             }
+            
+            comp1.assets_combined = assets_combined_1;
+            comp1.liability_combined = liability_combined_1;
+            comp1.profit_combined = profit_combined_1;
+            comp1.ebitda_combined = ebitda_combined_1;
+            comp1.cash_combined = cash_combined_1;
+            comp2.assets_combined = assets_combined_2;
+            comp2.liability_combined = liability_combined_2;
+            comp2.profit_combined = profit_combined_2;
+            comp2.ebitda_combined = ebitda_combined_2;
+            comp2.cash_combined = cash_combined_2;
+            
             console.log("y1: " + year[0] + " y2: " + year[1] + " y3: " + year[2]);
             var finalPercent = parseInt(((year[0] + year[1] + year[2]) / 3));
             console.log("final percent: " + finalPercent);
