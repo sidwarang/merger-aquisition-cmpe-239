@@ -133,6 +133,7 @@ exports.getStatsCompany = function (req, res) {
 		
 	if(req.body.id == "1" && localStorage.getItem('set')==1){
 		 comp = localStorage.getItem('compFirst');
+        console.log("in company"+comp);
 	}
 	else if(req.body.id == "2" && localStorage.getItem('set')==1){
         comp = localStorage.getItem('compSecond');
@@ -154,7 +155,9 @@ exports.getStatsCompany = function (req, res) {
             var tweets = twits;
             // console.log("hello pol..." + polarity);
 
+            console.log("in company"+comp);
             mysql.fetchData(getStats, function (err, rows) {
+                console.log("here?");
                 if (rows.length < 3) {
                 	res.render('index', {error: "Error"});
                     console.log(err);
@@ -163,7 +166,7 @@ exports.getStatsCompany = function (req, res) {
                     // console.log("pol..." + polarity);
                     var comp1 = [];
                     for (var i = 0; i < rows.length; i++) {
-                        if (rows[i].Company_Name === comp) {
+                        if (rows[i].Company_Name.toLowerCase() === comp) {
                             comp1.push(rows[i]);
                         }
 

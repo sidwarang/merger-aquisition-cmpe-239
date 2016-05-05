@@ -38,7 +38,7 @@ exports.connect = function(url, callback){
 
 exports.fetchData = function (callback) {
     if(mongoose.connection.readyState!=1)
-         mongoose.connect('mongodb://localhost/cmpe239');
+         mongoose.connect('mongodb://localhost/cmpe239_proj');
     var companySchema = Company;
     
     var companies = [],
@@ -67,7 +67,7 @@ exports.fetchData = function (callback) {
 
 exports.postData = function (rules, callback) {
     if(mongoose.connection.readyState!=1)
-         mongoose.connect('mongodb://localhost/cmpe239');
+         mongoose.connect('mongodb://localhost/cmpe239_proj');
     var rulesSchema = Rules;
 
     rulesSchema.collection.insert(rules, onInsert);
@@ -83,7 +83,7 @@ exports.postData = function (rules, callback) {
 
 exports.getStats = function (res,compFirst, compSecond, callback) {
     if(mongoose.connection.readyState!=1)
-        mongoose.connect('mongodb://localhost/cmpe239');
+        mongoose.connect('mongodb://localhost/cmpe239_proj');
     var companySchema = Company;
     var rulesSchema;
     var techs1 = [];
@@ -92,8 +92,9 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
     var count;
     var mapData = [];
     var mapKeys = [];
-        
 
+
+    
     companySchema.find({ name: compFirst }, function(err, comp) {
         if (err) throw err;
 
@@ -121,8 +122,10 @@ exports.getStats = function (res,compFirst, compSecond, callback) {
                             callback(1);
                             console.log(data);
                             for(key in data) {
-                                mapKeys.push(key);
-                                mapData.push(data[key]);
+                                if(data[key]>0) {
+                                    mapKeys.push(key);
+                                    mapData.push(data[key]);
+                                }
                             }
                             techsNames = [];
                             techsCounts =[];
@@ -184,9 +187,12 @@ function getResult(techs, techs1, techs2) {
 
 function doCompare(techs1, techs) {
     techs1.sort();
+    var temp;
     console.log("data:\n" + techs1);
     for(var i=0; i<techs.length; i++) {
-        if(matchThem(techs1, techs[i].technologies))
+        temp = techs[i].technologies;
+        temp.sort();
+        if(matchThem(techs1, temp))
             return techs[i].count;
     }
     return 0;
@@ -204,7 +210,7 @@ function getCombos(techs1, techs2) {
     } else if(len1==1) {
         getCombos(techs1, techs2.slice(len2/2));
         getCombos(techs1, techs2.slice(0,len2/2));
-    } else if(len2==1) {
+    } else {
         getCombos(techs1.slice(len1/2), techs2);
         getCombos(techs1.slice(0,len1/2), techs2);
     }
@@ -218,13 +224,13 @@ function removeDuplicates(techs1, techs2) {
             if(j<techs1.length) {
                 if(techs2[i]==techs1[j]) {
                     console.log("duplicate removed: " + techs1[j]);
-                    techsData[techs1[j]] = 2;
+                    techsData[techs1[j]] = [1,1];
                     j++;
                 }
             }
         }
         if(j<techs1.length) {
-            techsData[techs1[j]] = 1;
+            techsData[techs1[j]] = [0,1];
             result.push(techs1[j]);
         }
     }
@@ -251,7 +257,7 @@ function matchThem(one, two) {
 exports.fetchRules = function () {
 
     if(mongoose.connection.readyState!=1)
-        mongoose.connect('mongodb://localhost/cmpe239');
+        mongoose.connect('mongodb://localhost/cmpe239_proj');
     var rulesSchema = Rules;
 
     var rules = [],

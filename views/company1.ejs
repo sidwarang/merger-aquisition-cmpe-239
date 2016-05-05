@@ -9,15 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="">
 
-	<script type="text/javascript" src="/js/angular-fusioncharts.min.js"></script>
-	
-	
-   
+
     <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-   
-    <link href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
+    <link href="/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
 
     <link href="css/timeline.css" rel="stylesheet">
 
@@ -26,190 +22,158 @@
 
 
     <link href="/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
 
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="/bower_components/highcharts/highcharts.js"></script>
 
     <script src="/bower_components/angular/angular.js"></script>
-   	<script type="text/javascript" src="/js/fusioncharts.js"></script>
-<script type="text/javascript" src="/js/themes/fusioncharts.theme.fint.js"></script>
+    <script type="text/javascript" src="/js/fusioncharts.js"></script>
+    <script type="text/javascript" src="/js/themes/fusioncharts.theme.fint.js"></script>
 
-
-
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/angular-fusioncharts.min.js"></script>
-    
-    
-    <script>
-        $(document).ready(function () {
-            $("#show").click(function () {
-                $("p").show();
-                $(container4).css('border', "3px solid #000000");
-                $(container4).css('width', "450px");
-                $(container4).css('height', "250px");
-            });
-        });
-    </script>
-
-    <style type="text/css">
-        .borderShadow {
-            box-shadow: 5px 5px 22px 0px #2C3E50;
-        }
-
-    </style>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-    <script src="http://code.highcharts.com/highcharts-3d.js"></script>
-    <script src="http://code.highcharts.com/highcharts-more.js"></script>
-    <script src="http://code.highcharts.com/modules/solid-gauge.js"></script>
-    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script type="text/javascript" src="/js/angular-fusioncharts.min.js"></script>
+    <script src="/bower_components/highcharts/highcharts-3d.js"></script>
+    <script src="/bower_components/highcharts/highcharts-more.js"></script>
+    <script src="/bower_components/highcharts/modules/solid-gauge.js"></script>
+    <script src="/bower_components/highcharts/modules/exporting.js"></script>
 
     <link rel="shortcut icon" href="assets/images/gt_favicon.png">
-    <style type="text/css">
-        .chartSize {
-            height: 100%;
-            width: 50%;
-            position: relative;
-        }
 
-        .scrollit {
-            overflow: scroll;
-            height: 350px;
-        }
-    </style>
-    
-    
     <script>
-    
-    
-    	var company = angular.module("company1_app",["ng-fusioncharts"]);
-        company.controller('company1_controller', function($scope,$http,$window){
 
-        	$http({
-    			method:'POST',
-    			url:'/getCompanyDetails',
-    			data:{"id":"1"}
-    		}).then(function(res){
-    			if(res.data.status == "200"){
-					//alert(comp1[0].Company_Name.toString().toUpperCase());
-    				data = res.data.companyDetails.domain;
-					$scope.location = res.data.companyDetails.location;
-    				$scope.company1 = res.data.company1Name.toString().toUpperCase();
-    				$scope.company2 = res.data.company2Name.toString().toUpperCase();
-    				$scope.chart = {"caption":"Revenue Increment in different domains","subCaption":res.data.companyDetails.companyName.toString().toUpperCase(),"xAxisName":"Domain Name","yAxisName":"Revenue percent increase","data":data};
-    				$scope.chart2_Create();
-    				chart1_Create(res.data.comp1);    				
-    				chart3_Create(res.data.comp1,res.data.tweets,res.data.polarity);
-					$scope.createChart4();
-    			}else{
-    				
-    			}
-    			
-    		})
-        	
-    		 $scope.chart2_Create = function(){
-       		 FusionCharts.ready(function(){
-       			  var chart2 = new FusionCharts({
-       			      "type": "column2d",
-       			      "renderAt": "container2",
-       			      "width": "452",
-       			      "height": "400",
-       			      "dataFormat": "json",
-       			      "dataSource":  {
-       			    	   "chart": {
-       			    	        "caption":  $scope.chart.caption, 
-       			    	        "subCaption": $scope.chart.subCaption,
-       			    	        "xAxisName": $scope.chart.xAxisName,
-       			    	        "yAxisName": $scope.chart.yAxisName,
-       			    	        "lineThickness": "2",
-       			    	        "paletteColors": "#0075c2",
-       			    	        "baseFontColor": "#333333",
-       			    	        "baseFont": "Helvetica Neue,Arial",
-       			    	        "captionFontSize": "14",
-       			    	        "subcaptionFontSize": "14",
-       			    	        "subcaptionFontBold": "0",
-       			    	        "showBorder": "0",
-       			    	        "bgColor": "#ffffff",
-       			    	        "showShadow": "0",
-       			    	        "canvasBgColor": "#ffffff",
-       			    	        "canvasBorderAlpha": "0",
-       			    	        "divlineAlpha": "100",
-       			    	        "divlineColor": "#999999",
-       			    	        "divlineThickness": "1",
-       			    	        "divLineDashed": "1",
-       			    	        "divLineDashLen": "1",
-       			    	        "divLineGapLen": "1",
-       			    	        "showXAxisLine": "1",
-       			    	        "xAxisLineThickness": "1",
-       			    	        "xAxisLineColor": "#999999",
-       			    	        "showAlternateHGridColor": "0"
-       			    	    },
-       			    	    "data":$scope.chart.data
-       			    	   }
-       			});
-       			chart2.render();
-       			}) 
-       	} 
-		
-		
-		$scope.createChart4 = function(){
-		
-		FusionCharts.ready(function () {
-		var locationMap = new FusionCharts({
-        type: 'maps/usa',
-        renderAt: 'container4',
-        width: '452',
-        height: '400',
-        dataFormat: 'json',
-        dataSource: {
-            "chart": {
-                "caption": "Company Location",
-                "subcaption": "", 
-                "borderColor": "#DDDDDDD",
-                "showLabels": "1",               
-                
-                "numberScaleValue": "1,1000,1000",
-                "numberScaleUnit": "K,M,B",
-                "numberPrefix": "$",
-                "entityFillHoverColor": "#d35400",
-                "entityFillHoverAlpha": "30",
-                "theme" : "fint"
-            },
-            "colorrange": {
-                "gradient": "1",
-                "startLabel": "",
-                "endLabel": "",
-                "code": "#f39c12",
-                "minvalue": "",
-                "maxValue": "" 
-            },
-            "data": $scope.location
-        }
-    });
-    locationMap.render();
-});
-		
-		
-		}
-		
+
+        var company = angular.module("company1_app", ["ng-fusioncharts"]);
+        company.controller('company1_controller', function ($scope, $http, $window) {
+
+            $http({
+                method: 'POST',
+                url: '/getCompanyDetails',
+                data: {"id": "1"}
+            }).then(function (res) {
+                if (res.data.status == "200") {
+                    //alert(comp1[0].Company_Name.toString().toUpperCase());
+                    data = res.data.companyDetails.domain;
+                    $scope.location = res.data.companyDetails.location;
+                    $scope.company1 = res.data.company1Name.toString().toUpperCase();
+                    $scope.company2 = res.data.company2Name.toString().toUpperCase();
+                    $scope.chart = {
+                        "caption": "Revenue Increment in different domains",
+                        "subCaption": res.data.companyDetails.companyName.toString().toUpperCase(),
+                        "xAxisName": "Domain Name",
+                        "yAxisName": "Revenue percent increase",
+                        "data": data
+                    };
+                    $scope.chart2_Create();
+                    chart1_Create(res.data.comp1);
+                    chart3_Create(res.data.comp1, res.data.tweets, res.data.polarity);
+                    $scope.createChart4();
+                } else {
+
+                }
+
+            })
+
+            $scope.chart2_Create = function () {
+                FusionCharts.ready(function () {
+                    var chart2 = new FusionCharts({
+                        "type": "column2d",
+                        "renderAt": "container2",
+                        "width": "452",
+                        "height": "400",
+                        "dataFormat": "json",
+                        "dataSource": {
+                            "chart": {
+                                "caption": $scope.chart.caption,
+                                "subCaption": $scope.chart.subCaption,
+                                "xAxisName": $scope.chart.xAxisName,
+                                "yAxisName": $scope.chart.yAxisName,
+                                "lineThickness": "2",
+                                "paletteColors": "#0075c2",
+                                "baseFontColor": "#333333",
+                                "baseFont": "Helvetica Neue,Arial",
+                                "captionFontSize": "14",
+                                "subcaptionFontSize": "14",
+                                "subcaptionFontBold": "0",
+                                "showBorder": "0",
+                                "bgColor": "#ffffff",
+                                "showShadow": "0",
+                                "canvasBgColor": "#ffffff",
+                                "canvasBorderAlpha": "0",
+                                "divlineAlpha": "100",
+                                "divlineColor": "#999999",
+                                "divlineThickness": "1",
+                                "divLineDashed": "1",
+                                "divLineDashLen": "1",
+                                "divLineGapLen": "1",
+                                "showXAxisLine": "1",
+                                "xAxisLineThickness": "1",
+                                "xAxisLineColor": "#999999",
+                                "showAlternateHGridColor": "0"
+                            },
+                            "data": $scope.chart.data
+                        }
+                    });
+                    chart2.render();
+                })
+            }
+
+
+            $scope.createChart4 = function () {
+
+                FusionCharts.ready(function () {
+                    var locationMap = new FusionCharts({
+                        type: 'maps/usa',
+                        renderAt: 'container4',
+                        width: '452',
+                        height: '400',
+                        dataFormat: 'json',
+                        dataSource: {
+                            "chart": {
+                                "caption": "Company Location",
+                                "subcaption": "",
+                                "borderColor": "#DDDDDDD",
+                                "showLabels": "1",
+
+                                "numberScaleValue": "1,1000,1000",
+                                "numberScaleUnit": "K,M,B",
+                                "numberPrefix": "$",
+                                "entityFillHoverColor": "#d35400",
+                                "entityFillHoverAlpha": "30",
+                                "theme": "fint"
+                            },
+                            "colorrange": {
+                                "gradient": "1",
+                                "startLabel": "",
+                                "endLabel": "",
+                                "code": "#f39c12",
+                                "minvalue": "",
+                                "maxValue": ""
+                            },
+                            "data": $scope.location
+                        }
+                    });
+                    locationMap.render();
+                });
+
+
+            }
+
 
         });
-    	
-    
-        
-        function chart1_Create(comp1){
-        	
-        	
-        	var chart1 = new Highcharts.Chart({
+
+
+        function chart1_Create(comp1) {
+
+
+            var chart1 = new Highcharts.Chart({
                 chart: {
                     type: 'column',
                     renderTo: 'container1'
                 },
-				title: {
+                title: {
                     text: 'Stock data'
                 },
                 subtitle: {
-                    text:  comp1[0].Company_Name.toString().toUpperCase()
+                    text: comp1[0].Company_Name.toString().toUpperCase()
                 },
                 xAxis: {
                     categories: ['Current Assests',
@@ -259,19 +223,19 @@
                     }
                 },
                 series: [{
-                    name:  comp1[0].Company_Name.toString().toUpperCase() ,
-                    data: [ comp1[0].Total_Current_Assets, comp1[0].Total_Liabilities , comp1[0].EBITDA , comp1[0].Gross_Margin ,comp1[0].Cash_and_Cash_Equivalents]
+                    name: comp1[0].Company_Name.toString().toUpperCase(),
+                    data: [comp1[0].Total_Current_Assets, comp1[0].Total_Liabilities, comp1[0].EBITDA, comp1[0].Gross_Margin, comp1[0].Cash_and_Cash_Equivalents]
                 }]
             });
             chart1.render();
-       }
-    
-    
-        function chart3_Create(comp1,tweets,polarity){
-        	
-        	var chart3 = new Highcharts.Chart({
+        }
+
+
+        function chart3_Create(comp1, tweets, polarity) {
+
+            var chart3 = new Highcharts.Chart({
                 chart: {
-                    renderTo:'container3',
+                    renderTo: 'container3',
                     backgroundColor: '#EDEEFA',
                     type: 'pie',
                     options3d: {
@@ -283,7 +247,7 @@
                     text: 'Tweets Polarity'
                 },
                 subtitle: {
-                    text:  comp1[0].Company_Name.toString().toUpperCase()
+                    text: comp1[0].Company_Name.toString().toUpperCase()
                 },
                 plotOptions: {
                     pie: {
@@ -295,7 +259,7 @@
                     name: 'Tweets Polarity',
                     data: [
                         ['Neutral', polarity[2]],
-                        ['Negative', polarity[1]] ,
+                        ['Negative', polarity[1]],
                         ['Positive', polarity[0]]
 
 
@@ -303,11 +267,9 @@
                 }]
             });
             chart3.render();
-         }
-    
-     </script>
-    
-    
+        }
+
+    </script>
 
 </head>
 
@@ -315,7 +277,7 @@
 
 <div id="wrapper">
 
-    
+
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -326,9 +288,6 @@
             </button>
             <a class="navbar-brand" href="/index">Venture Net</a>
         </div>
-       
-
-                
 
 
         <div class="navbar-default sidebar" role="navigation">
@@ -385,7 +344,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <div class="row">
             <div class="col-lg-6">
@@ -408,25 +367,18 @@
                     </div>
                 </div>
             </div>
-          
+
         </div>
 
-        
+
     </div>
-    /#page-wrapper
 
 </div>
-
-<script src="/bower_components/jquery/dist/jquery.min.js"></script>
-
 
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 
 <script src="/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-
-
-<script src="js/raphael-min.js"></script>
 
 
 <script src="js/sb-admin-2.js"></script>

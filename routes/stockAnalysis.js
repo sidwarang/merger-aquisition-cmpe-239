@@ -11,7 +11,7 @@ exports.getStats = function (req, res) {
     
     var compFirst = localStorage.getItem('compFirst');
     var compSecond = localStorage.getItem('compSecond');
-    var getStats = "select * from mytable1 where Company_Name='" + compFirst + "' OR Company_Name='" + compSecond + "'";
+    var getStats = "select * from mytable1 where Company_Name='" + compFirst.toLowerCase() + "' OR Company_Name='" + compSecond.toLowerCase() + "'";
     mysql.fetchData(getStats, function (err, rows) {
         if (rows.length < 6) {
 
@@ -23,10 +23,10 @@ exports.getStats = function (req, res) {
             var comp1 = [];
             var comp2 = [];
             for (var i = 0; i < rows.length; i++) {
-                if (rows[i].Company_Name === compFirst) {
+                if (rows[i].Company_Name.toLowerCase() === compFirst) {
                     comp1.push(rows[i]);
                 }
-                else if (rows[i].Company_Name === compSecond) {
+                else if (rows[i].Company_Name.toLowerCase() === compSecond) {
                     comp2.push(rows[i]);
                 }
 

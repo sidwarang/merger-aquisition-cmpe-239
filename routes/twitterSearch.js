@@ -3,10 +3,7 @@ var util = require('util'),
     sentimentAnalysis = require('./twitterSentimentAnalysis.js');
 
 var config = {
-    consumer_key: 'WhYExrBdjaQKyArMvJhxjHiHt',
-    consumer_secret: 'WZ81G6ADuk2RJgGRVMsRZMGgJcUudbC7W2xdhTTx1Miqbhr68y',
-    access_token: '2433226039-ALNzRIdqRR3StA2GZSXyPDuMJMhp5rm604BWktz',
-    access_token_secret: 'nwUXQJsFraf4wd2SB8ls3BKQiB5uAWVEWO1Ea6cLk9ifB'
+    
 };
 
 
@@ -19,10 +16,10 @@ exports.getTweets = function getTweets(comp1, comp2, callback) {
     var negative = 0;
     var neutral = 0;
     var tweetsPolarity = [];
-    var twitQuery = comp1 + " " + comp2;
+    var twitQuery = "ibm" + " " + "fb";
     twitterClient.get('search/tweets', {q: twitQuery, count: 50}, function (err, data) {
             var totalTweets = data.statuses;
-            // console.log(JSON.stringify(totalTweets));
+            //console.log(JSON.stringify(totalTweets));
             for (var i = 0; i < totalTweets.length; i++) {
                 totalTweets[i].text = totalTweets[i].text.replace(/^RT/, "");
                 totalTweets[i].text = totalTweets[i].text.replace(/^ReTw/, "");
@@ -73,6 +70,7 @@ exports.getTweets1 = function getTweets(comp1, callback) {
     // console.log(twitQuery);
     
     twitterClient.get('search/tweets', {q: twitQuery, count: 50}, function (err, data) {
+        if(data!=null){
             var totalTweets = data.statuses;
             // console.log(JSON.stringify(totalTweets));
             for (var i = 0; i < totalTweets.length; i++) {
@@ -104,6 +102,10 @@ exports.getTweets1 = function getTweets(comp1, callback) {
             console.log("positive: " + positive + ", negative: " + negative + ", neutral: " + neutral);
             callback(err, tweetsPolarity, tweets);
         }
+        else
+            callback(false, [0,0,0], []);
+        }
+
     );
 
 
